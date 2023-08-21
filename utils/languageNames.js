@@ -1,17 +1,29 @@
 const iso6391 = require('iso-639-1');
 
-function getNames(isoCodes) {
+function getArrayNames(isoCodes) {
 
   return isoCodes.map((isoCode) => iso6391.getName(isoCode));
 }
 
-function getNativeNames(isoCodes) {
+function getArrayNativeNames(isoCodes) {
 
   return isoCodes.map((isoCode) => iso6391.getNativeName(isoCode));
 }
 
+function getObjectNames(isoCodes) {
+
+  return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getName(isoCode) }) );
+}
+
+function getObjectNativeNames(isoCodes) {
+
+  return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getNativeName(isoCode) }) );
+}
+
 module.exports = {
-     getNames,
-     getNativeNames
+     getArrayNames,
+     getArrayNativeNames,
+     getObjectNames,
+     getObjectNativeNames
 };
 
