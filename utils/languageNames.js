@@ -1,29 +1,38 @@
+
+const path    = require('path');
 const iso6391 = require('iso-639-1');
+const dirs    = require("./subDirs");
 
-function getArrayNames(isoCodes) {
+function getNamesArray(isoCodes) {
 
-  return isoCodes.map((isoCode) => iso6391.getName(isoCode));
+    return isoCodes.map((isoCode) => iso6391.getName(isoCode));
 }
 
-function getArrayNativeNames(isoCodes) {
+function getNativeNamesArray(isoCodes) {
 
-  return isoCodes.map((isoCode) => iso6391.getNativeName(isoCode));
+    return isoCodes.map((isoCode) => iso6391.getNativeName(isoCode));
 }
 
-function getObjectNames(isoCodes) {
+function getNamesObjectArray(isoCodes) {
 
-  return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getName(isoCode) }) );
+    return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getName(isoCode) }) );
 }
 
-function getObjectNativeNames(isoCodes) {
+function getNativeNamesObjectArray(isoCodes) {
 
-  return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getNativeName(isoCode) }) );
+    return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getNativeName(isoCode) }) );
+}
+
+function sourceLocale(serviceName, localeDir = 'locale' ) {
+
+    localePath = path.join(localeDir, serviceName);
+    return getNativeNamesObjectArray (dirs.get (localePath));
 }
 
 module.exports = {
-     getArrayNames,
-     getArrayNativeNames,
-     getObjectNames,
-     getObjectNativeNames
+     getNamesArray,
+     getNativeNamesArray,
+     getNamesObjectArray,
+     getNativeNamesObjectArray,
+     sourceLocale
 };
-
