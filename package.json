@@ -1,0 +1,14 @@
+{
+  "name": "ch-node-utils",
+  "version": "1.0.0",
+  "description": "set of node utils which can be used across repos/projects",
+  "main": "utils.js",
+  "repository": {
+    "url": "https://github.com/companieshouse/ch-node-utils"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
