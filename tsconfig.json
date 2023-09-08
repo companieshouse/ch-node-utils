@@ -13,12 +13,6 @@
      "removeComments": true,
      "esModuleInterop": true,
      "importHelpers": true,
-        "noFallthroughCasesInSwitch": true,
-        "pretty": true,
-        "baseUrl": "./src",
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "emitDecoratorMetadata": true,
      "typeRoots": [
             "src/index.ts",
             "src/global.d.ts",
@@ -32,11 +26,3 @@
     ],
    "exclude": ["node_modules"]
  }
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 {
   "name": "@basilest-ch/ch-node-utils",
-  "version": "1.5.17",
+  "version": "1.5.18",
   "author": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
