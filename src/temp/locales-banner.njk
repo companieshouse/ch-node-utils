@@ -1,0 +1,32 @@
+{% macro setUrl(url, lang='en') %}
+{% if url.includes('?') %}     {# check if there are query params already #}
+  {% if url.includes('&lang=') %}
+    {% set url = url.replace(r/([\?&])lang=[^&]+/, '$1lang=' + lang) %}
+  {% else %}
+    {% set url = url + '&lang=' + lang %}
+  {% endif %}
+{% else %}
+  {% set url = url + '?lang=' + lang %}
+{% endif %}
+
+{{ url }}
+{% endmacro %}
+
+
+<div class="govuk-width-container ">
+    <div class="govuk-grid-column-full no-padd">
+        <nav class="govuk-language-select" aria-label="Language switcher">
+            <ul class="govuk-language-select__list">
+            {% if languageEnabled %}
+               {% for l in languages %}
+                <li class="govuk-language-select__list-item">
+                    <a href="{{setUrl(currentUrl, l.IsoCode)}}" lang={{l.IsoCode}} rel="alternate" class="govuk-link" >
+                        <span aria-hidden="true">{{l.Name}}</span>
+                    </a>
+                </li>
+               {% endfor %}  
+            {% endif %}  
+            </ul>
+        </nav>
+    </div>
+</div>
