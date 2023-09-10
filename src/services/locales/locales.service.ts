@@ -1,4 +1,4 @@
-import i18nCh  from '../../utils/i18nCh'
+import i18nCh  from "../../utils/i18nCh"
 
 export default class LocalesService {
    private static instance: LocalesService

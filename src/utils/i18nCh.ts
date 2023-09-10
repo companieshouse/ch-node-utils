@@ -1,7 +1,7 @@
-import i18next from 'i18next'
-import Backend from 'i18next-fs-backend'
-import path    from 'path';
-import fs, { readdirSync, lstatSync } from 'fs'
+import i18next from "i18next"
+import Backend from "i18next-fs-backend"
+import path    from "path";
+import fs, { readdirSync, lstatSync } from "fs"
 
 export default class i18nCh {
 
@@ -31,7 +31,7 @@ export default class i18nCh {
             ns: nameSpaces,
             partialBundledLanguages: true,
             lng: lang,
-            fallbackLng: 'en',
+            fallbackLng: "en",
             preload: readdirSync(localesFolder).filter((fileName) => {
                const joinedPath = path.join(localesFolder, fileName)
                return lstatSync(joinedPath).isDirectory()
@@ -60,9 +60,9 @@ export default class i18nCh {
       const jsonFiles: string[] = [];
 
       if (this.localesFolder) {
-         fs.readdirSync(path.join(this.localesFolder, 'en')).forEach((file) => {   // use 'en' as the only guaranteed to exist
-            if (path.extname(file) === '.json') {
-                     jsonFiles.push (path.basename(file, '.json'));
+         fs.readdirSync(path.join(this.localesFolder, "en")).forEach((file) => {   // use "en" as the only guaranteed to exist
+            if (path.extname(file) === ".json") {
+                     jsonFiles.push (path.basename(file, ".json"));
                   }
             });
       }
@@ -84,7 +84,7 @@ export default class i18nCh {
       try {
           if (this.i18nInst && this.nameSpaces ) {
              this.changeLanguage (lang)
-             const keysValuesList = this.i18nInst.getDataByLanguage('en'); // use 'en' as the only guaranteed to exist
+             const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
              if ( keysValuesList !== undefined) {
                 for (const [ns, value] of Object.entries(keysValuesList)) {
                    console.log(`${ns}: ${this.nameSpaces}`);

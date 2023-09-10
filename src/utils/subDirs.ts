@@ -1,5 +1,5 @@
-import fs   from 'fs';
-import path from 'path';
+import fs   from "fs";
+import path from "path";
 
 export default class SubDirs {
    static getSubDirs (dirPath: string): string[] {

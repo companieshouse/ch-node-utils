@@ -1,4 +1,4 @@
-import iso6391 from 'iso-639-1';
+import iso6391 from "iso-639-1";
 import SubDirs from "./subDirs.js";
 
 export class NamedIsoCode {
@@ -29,7 +29,7 @@ export default class LanguageNames {
 
    // custom sort to leave "en" always at 1st position
    private static _customSort(a: string, b: string): number {
-   if (a === "en") { return -1; } // 'en' is considered smaller, so it will be placed at the beginning
+   if (a === "en") { return -1; } // "en" is considered smaller, so it will be placed at the beginning
    if (b === "en") { return  1; }
 
    return a.localeCompare(b); // Sort other elements in ascending order
