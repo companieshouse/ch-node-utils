@@ -1,0 +1,33 @@
+{#
+macro to add the lang=... query params in a url passed in as arg
+Note: the url is amended only if the 'langInSession' var is not defined/pushed to the template.
+      If the var is defined, that means that the lang can be retrieved, in the backend,
+      from the session, so no need to add that in the url.
+      If a url is "extra-service" (it doesn't point back to the service which loaded this template)
+      then there is no session to retrieve the lang=... value from, in this case, the lang=...
+      query parm could be required even though the 'langInSession' is defined.
+      Another case is when the value stored in a session is old (i.e. the user clicked
+      a change of language), even in this scenario we want to send the lang=... value
+      via a url query param instead of retrieveing the old one from the session.
+      To force a url change regardless of anything, an optional 'force' boolean-arg is added.
+It receives:
+- url:   the url to amend
+- lang:  the value for lang=.... (i.e. 'en') }
+- force: to force the url amend. regardless of 'langInSession'
+#}
+{% macro addLangToUrl(url, lang='en', force=false) %}
+{% if not langInSession or force %}    {# check if the url amend is required #}
+   {% if url.includes('?') %}          {# check if there are query params already #}
+      {% set regExp = r/([\?&]lang=)[^&]*/g %}
+      {% if regExp.test(url) %}
+         {% set url = url.replace(regExp, '$1' + lang) %} {# already present. Amend #}
+      {% else %}
+         {% set url = url + '&lang=' + lang %}  {# not already present. Add it #}
+      {% endif %}
+   {% else %}
+      {% set url = url + '?lang=' + lang %}   {# there are no args at all. Add it #}
+   {% endif %}
+   {% set url = url.replace(r/\?&/, '?') %}  {# in case of original url just 1 single '?' #}
+{% endif %}
+{{ url }}
+{% endmacro %}
