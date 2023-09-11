@@ -8,10 +8,16 @@ export function LocalesMiddleware(): RequestHandler {
       return (req: Request, res: Response, next: NextFunction) => {
          console.log("----------X2 (ManageLocales) ------------")
 
-    let lang: string | undefined = (<string>req.query[QUERY_PAR_LANG] || req.session?.getExtraData<string>(QUERY_PAR_LANG))
-    console.log(`=====1=====Mng Loc ....(init lang=${lang})`)
-    console.log(req.session)
-
+    let lang: string | undefined = (<string>req.query[QUERY_PAR_LANG] ||
+                                    req.body.lang ||
+                                    req.session?.getExtraData<string>(QUERY_PAR_LANG))
+    console.log(`=====1=====Mng Loc ....(init lang=${lang}) - body:${req.body.lang}`)
+   //  console.log("session:")
+   //  console.log(req.session)
+    console.log("body:")
+    console.log(req.body)
+   //  console.log("req:")
+   //  console.log(req)
     console.log("=====2=====Mng Loc")
    if (lang === undefined || ! LanguageNames.isSupportedLocale (LocalesService.getInstance().localesFolder, lang)) {
          lang = "en"
