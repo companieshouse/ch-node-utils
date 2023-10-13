@@ -55,7 +55,7 @@ export default class i18nCh {
    }
 
    //_______________________________________________________________________________________________
-   // load all the file names (excluded .json) present in a certain dir
+   // load all the file names (without extension: ".json") present in a certain dir
    private loadAllNamespaces (): string[] {
       const jsonFiles: string[] = [];
 
@@ -69,7 +69,7 @@ export default class i18nCh {
       return jsonFiles;
    }
    //_______________________________________________________________________________________________
-   // load all the file names (excluded .json) present in a certain dir
+   // change to another lang
    private changeLanguage (lang: string) {
       this.i18nInst.changeLanguage(lang, (err) => {
           if (err) throw new Error(`i18nCh changeLanguage error: ${err}`)
