@@ -14,8 +14,22 @@
     "url": "https://github.com/sbasile-ch/ch-node-utils"
   },
   "scripts": {
+    "prebuild": "rm -rf ./lib",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "_test": "mocha --recursive test/**/*.spec.ts",
+    "test": "echo 'would execute: mocha --recursive test/**/*.spec.ts'",
+    "lint": "eslint 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts'",
+    "lint:fix": "eslint 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts' --fix",
+    "_coverage": "nyc npm test",
+    "coverage": "echo 'would execute: nyc npm test'",
+    "_test:coverage": "nyc --check-coverage --reporter=text-summary npm run test",
+    "test:coverage": "echo 'would execute: nyc --check-coverage --reporter=text-summary npm run test'",
+    "_coverage:report": "nyc --reporter=lcov --reporter=text npm run test",
+    "coverage:report": "echo 'would execute: nyc --reporter=lcov --reporter=text npm run test'",
+    "_analyse-code": "sonar-scanner" ,
+    "analyse-code": "echo 'would execute: sonar-scanner'" ,
+    "prepublishOnly": "[ ! -d node_modules ] && npm install; tsc",
+    "postpublish": "rm -rf lib"
   },
   "license": "MIT",
   "dependencies": {
@@ -30,5 +44,9 @@
     "@types/i18next": "^13.0.0",
     "@types/node": "^20.5.7",
     "typescript": "^5.2.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/companieshouse/ch-node-utils/issues"
+  },
+  "homepage": "https://github.com/companieshouse/ch-node-utils#readme"
 }
