@@ -5,7 +5,7 @@ version             := "unversioned"
 clean:
 	rm -f ./$(artifact_name)-*.zip
 	rm -rf ./build-*
-	rm -rf ./dist
+	rm -rf ./lib
 	rm -f ./build.log
 
 .PHONY: build
@@ -37,7 +37,7 @@ ifndef version
 endif
 	$(info Packaging version: $(version))
 	$(eval tmpdir := $(shell mktemp -d build-XXXXXXXXXX))
-	cp -r ./dist/* $(tmpdir)
+	cp -r ./lib/* $(tmpdir)
 	cp -r ./templates/* $(tmpdir)
 	cp -r ./package.json $(tmpdir)
 	cp -r ./package-lock.json $(tmpdir)
