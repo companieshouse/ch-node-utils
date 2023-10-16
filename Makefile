@@ -38,7 +38,7 @@ endif
 	$(info Packaging version: $(version))
 	$(eval tmpdir := $(shell mktemp -d build-XXXXXXXXXX))
 	cp -r ./lib/* $(tmpdir)
-	cp -r ./templates/* $(tmpdir)
+	cp -r ./templates/ $(tmpdir)/templates/
 	cp -r ./package.json $(tmpdir)
 	cp -r ./package-lock.json $(tmpdir)
 	cd $(tmpdir) && GIT_SSH_COMMAND="ssh" npm i --production
