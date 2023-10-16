@@ -2,6 +2,7 @@ import i18next from "i18next"
 import Backend from "i18next-fs-backend"
 import path    from "path";
 import fs, { readdirSync, lstatSync } from "fs"
+import log from "./log";
 
 export default class i18nCh {
 
@@ -55,16 +56,16 @@ export default class i18nCh {
    }
 
    //_______________________________________________________________________________________________
-   // load all the file names (without extension: ".json") present in a certain dir
+   // load all the file names (without extension: ".json") present in 'localesFolder'
    private loadAllNamespaces (): string[] {
       const jsonFiles: string[] = [];
 
       if (this.localesFolder) {
          fs.readdirSync(path.join(this.localesFolder, "en")).forEach((file) => {   // use "en" as the only guaranteed to exist
             if (path.extname(file) === ".json") {
-                     jsonFiles.push (path.basename(file, ".json"));
-                  }
-            });
+               jsonFiles.push (path.basename(file, ".json"));
+            }
+         });
       }
       return jsonFiles;
    }
@@ -87,11 +88,11 @@ export default class i18nCh {
              const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
              if ( keysValuesList !== undefined) {
                 for (const [ns, value] of Object.entries(keysValuesList)) {
-                   console.log(`${ns}: ${this.nameSpaces}`);
+                   log(`${ns}: ${this.nameSpaces}`);
                    if (this.nameSpaces.includes(ns)) {
-                      console.log(`${ns}`);
+                      log(`${ns}`);
                       for (const [key] of Object.entries(value)) {
-                         console.log(`${key}`);
+                         log(`${key}`);
                          data[key] = this.i18nInst.t(key, {lng: lang, ns: ns, vars});
                       }
                    }
@@ -113,7 +114,7 @@ export default class i18nCh {
               try {
                       this.changeLanguage (lang)
                       t = this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, vars})
-                      console.log(`searched for key:${key} lang:${lang} and got: ${t}`)
+                      log(`searched for key:${key} lang:${lang} and got: ${t}`)
               }
               catch (err) {
                  throw err; // propagate

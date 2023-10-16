@@ -1,4 +1,6 @@
 import i18nCh  from "../../utils/i18nCh"
+import log from "../../utils/log";
+
 
 export default class LocalesService {
    private static instance: LocalesService
@@ -7,9 +9,9 @@ export default class LocalesService {
    public localesFolder: string
    public i18nCh: i18nCh
 
+   //_______________________________________________________________________________________________
    private constructor(localesFolder: string, enabled: Boolean) {
-      console.log("----------X0 (construct) ------------")
-
+      log("---------- LocalesService: constructor ------------")
       this.enabled = enabled
       this.localesFolder = localesFolder
       this.i18nCh = i18nCh.getInstance(localesFolder)
@@ -20,7 +22,7 @@ export default class LocalesService {
    //_______________________________________________________________________________________________
    // Singleton retriever
    public static getInstance(localesFolder: string = "locales", enabled: Boolean = false): LocalesService {
-      console.log("----------X0 (getInst) ------------")
+      log("---------- LocalesService: getInstance ------------")
       if (!LocalesService.instance) {
          LocalesService.instance = new LocalesService(localesFolder, enabled)
       }
