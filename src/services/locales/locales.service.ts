@@ -15,8 +15,7 @@ export default class LocalesService {
       this.enabled = enabled
       this.localesFolder = localesFolder
       this.i18nCh = i18nCh.getInstance(localesFolder)
-      console.log(`enabled: ${this.enabled} / path: ${this.localesFolder}`)
-      console.log(`enabled: ${this.enabled} / path: ${this.localesFolder} / i18nCh: ${this.i18nCh}`)
+      log(`enabled: ${this.enabled} / path: ${this.localesFolder}`)
    }
 
    //_______________________________________________________________________________________________
