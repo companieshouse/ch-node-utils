@@ -1,11 +1,11 @@
 # ch-node-utils
 
 set of node utils which can be used across repos/projects.
-Available as a normal npm depndency([here on npmjs](https://www.npmjs.com/package/@companieshouse/ch-node-utils))
+Available as a normal npm dependency([here on npmjs](https://www.npmjs.com/package/@companieshouse/ch-node-utils))
 
-Areas for the different utilities stored in this repo:
+## Areas for the different utilities stored in this repo:
 
-## i18n (Internationalisation)
+### i18n (Internationalisation)
 
   Internationalisation has been added to CHS, after already being available (at least for Welsh) on legacy systems (EWF/SCRS/CHD/...)
 
