@@ -16,7 +16,7 @@ It receives:
                {% for l in languages %}
                 <li class="govuk-language-select__list-item">
                     <a href="{{lang2url.addLangToUrl(currentUrl, l.IsoCode, true)}}" lang={{l.IsoCode}} rel="alternate" class="govuk-link" >
-                        <span aria-hidden="true">{{l.Name}}</span>
+                        <span>{{l.Name}}</span>
                     </a>
                 </li>
                {% endfor %}
