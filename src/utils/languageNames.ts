@@ -8,20 +8,20 @@ export class NamedIsoCode {
 
 export default class LanguageNames {
    static getNamesArray(isoCodes: string[]) {
-      return isoCodes.map((isoCode) => iso6391.getName(isoCode));
+      return isoCodes.map((isoCode) => iso6391.getName(isoCode));  // cy => "Welsh"
    }
 
    static getNativeNamesArray(isoCodes: string[]) {
-      return isoCodes.map((isoCode) => iso6391.getNativeName(isoCode));
+      return isoCodes.map((isoCode) => iso6391.getNativeName(isoCode));  // cy => "Cymraeg"
    }
 
    static getNamesObjectArray(isoCodes: string[]) {
-      // return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getName(isoCode) }) );
+      // [... "cy", ...]   ==> [ ... {"IsoCode": "cy", "Name": "Welsh" } ...]
       return isoCodes.map((isoCode) => (new NamedIsoCode(isoCode, iso6391.getName(isoCode))) );
    }
 
    static getNativeNamesObjectArray(isoCodes: string[]) {
-      // return isoCodes.map((isoCode) => ({ IsoCode: isoCode, Name: iso6391.getNativeName(isoCode) }) );
+      // [... "cy", ...]   ==> [ ... {"IsoCode": "cy", "Name": "Cymraeg" } ...]
       return isoCodes.map((isoCode) => (new NamedIsoCode(isoCode, iso6391.getNativeName(isoCode))) );
    }
 

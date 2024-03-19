@@ -20,11 +20,20 @@ export function LocalesMiddleware(): RequestHandler {
          req.session.setExtraData(QUERY_PAR_LANG, lang) // when there is a session store it there
       }
       req.lang = lang // store it also as metadata in the request
-      const [pathWithoutQuery] = req.url.split("?")
-      req.url = pathWithoutQuery // remove query params from url (so previous/old controllers keep working)
 
-      const currentUrl = `${req.protocol}://${req.get("host")}${pathWithoutQuery}`
-      res.locals.currentUrl = currentUrl
+      let currentUrl = req.url
+      if (process.env.CH_NODE_UTILS_DROP_LANG_QUERY_PARAM) { // FALSE if (unset / xxxx= / xxxx='') | TRUE if set (any value)
+         // controllers in some services (eg. dissolution-web) failed when introducing the
+         // "lang=xx" query-param in the URL.
+         // We then allow, (via an env var), to opt to remove that param.
+         let cUrl = new URL(`http://a${req.url}`)  // "http://a" just to have a full URL (we don't need the 1st part)
+         cUrl.searchParams.delete(QUERY_PAR_LANG)
+         currentUrl = `${cUrl.pathname}${cUrl.search}`
+         log(`LocalesMiddleware: removing '${QUERY_PAR_LANG}'= query param (req.url=${currentUrl})`)
+      }
+
+      req.url = currentUrl
+      res.locals.currentUrl = `${req.protocol}://${req.get("host")}${currentUrl}`
 
       // node_modules/govuk-frontend/govuk/template.njk has (currently) the following lang vars
       res.locals.htmlLang = lang
