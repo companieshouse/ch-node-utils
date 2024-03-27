@@ -14,11 +14,15 @@ It receives:
             <ul class="govuk-language-select__list">
             {% if languageEnabled %}
                {% for l in languages %}
-                <li class="govuk-language-select__list-item">
-                    <a href="{{lang2url.addLangToUrl(currentUrl, l.IsoCode, true)}}" lang={{l.IsoCode}} rel="alternate" class="govuk-link" >
-                        <span>{{l.Name}}</span>
-                    </a>
-                </li>
+                 <li class="govuk-language-select__list-item">
+                 {% if lang == l.IsoCode %}
+                   <span class="govuk-body-s govuk-!-margin-2">{{l.Name}}</span>
+                 {% else %}
+                   <a href="{{lang2url.addLangToUrl(currentUrl, l.IsoCode, true)}}" lang={{l.IsoCode}} rel="alternate" class="govuk-link govuk-!-margin-2" >
+                      <span>{{l.Name}}</span>
+                   </a>
+                 {% endif %}
+                 </li>
                {% endfor %}
             {% endif %}
             </ul>
