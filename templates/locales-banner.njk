@@ -15,7 +15,7 @@ It receives:
             {% if languageEnabled %}
                {% for l in languages %}
                  <li class="govuk-language-select__list-item">
-                 {% if lang == l.IsoCode %}
+                 {% if lang and lang == l.IsoCode %}
                    <span class="govuk-body-s govuk-!-margin-2">{{l.Name}}</span>
                  {% else %}
                    <a href="{{lang2url.addLangToUrl(currentUrl, l.IsoCode, true)}}" lang={{l.IsoCode}} rel="alternate" class="govuk-link govuk-!-margin-2" >
