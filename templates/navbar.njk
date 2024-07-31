@@ -56,45 +56,16 @@ It receives:
 - chsMonitorGuiUrl: the URL for the 'Companies you follow' link
 #}
 {% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
-    {% set signInHref = "/signin" %}
-    {% set menuItems = [] %}
-    {% set menuItems = (menuItems.push({
-        id: "your-companies",
-        href: "/your-companies",
-        displayText: lang.yourCompanies if lang else "Your companies"
-    }), menuItems) %}
-    {% set menuItems = (menuItems.push({
-        id: "authorised-agent",
-        href: "/authorised-agent",
-        displayText: lang.authorisedAgent if lang else "Authorised agent"
-    }), menuItems) %}
-    {% set menuItems = (menuItems.push({
-        id: "your-filings",
-        href: "/user/transactions",
-        displayText: lang.yourFilings if lang else "Your filings"
-    }), menuItems) %}
-    {% set menuItems = (menuItems.push({
-        id: "companies-you-follow",
-        href: chsMonitorGuiUrl,
-        displayText: lang.companiesYouFollow if lang else "Companies you follow"
-    }), menuItems) %}
-    {% set menuItems = (menuItems.push({
-        id: "basket",
-        href: "/basket",
-        displayText: lang.basket if lang else 
-            "Basket"
-    }), menuItems) %}
-    {% set menuItems = (menuItems.push({
-        id: "your-details",
-        href: "/user/account",
-        displayText: lang.manageAccount if lang else "Manage account"
-    }), menuItems) %}
-    {% set menuItems = (menuItems.push({
-        id: "user-signout",
-        href: "/signout",
-        displayText: lang.signOut if lang else "Sign out"
-    }), menuItems) %}
+    {% set menuItems = [
+    { id: "your-companies", href: "/your-companies", displayText: lang.yourCompanies or "Your companies" },
+    { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" },
+    { id: "your-filings", href: "/user/transactions", displayText: lang.yourFilings or "Your filings" },
+    { id: "companies-you-follow", href: chsMonitorGuiUrl, displayText: lang.companiesYouFollow or "Companies you follow" },
+    { id: "basket", href: "/basket", displayText: lang.basket or "Basket" },
+    { id: "your-details", href: "/user/account", displayText: lang.manageAccount or "Manage account" },
+    { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" },
+    ] %}
 
-    {{ addNavbar(signInHref, menuItems, userDisplayText) }}
+    {{ addNavbar("/signin", menuItems, userDisplayText) }}
 
 {% endmacro %}
