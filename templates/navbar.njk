@@ -26,13 +26,13 @@ It receives:
 #}
 {% macro addNavbar(signInHref, menuItems, userDisplayText) %}
     <div class="js-toggle-nav" id="global-nav">
-        <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar if lang else 'The main navigation bar' }}">
+        <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar or 'The main navigation bar' }}">
             {% if userDisplayText %}
                 <a href="#navigation" class="js-header-toggle menu">{{ userDisplayText }}
-                    <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse if lang else 'Click to expand or collapse' }}</span>
+                    <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse or 'Click to expand or collapse' }}</span>
                 </a>
             {% else %}
-                <a id="user-signin-mobile" href="{{ signInHref }}" class="sign-in govuk-link">{{ lang.signInOrRegister if lang else 'Sign in / Register' }}</a>
+                <a id="user-signin-mobile" href="{{ signInHref }}" class="sign-in govuk-link">{{ lang.signInOrRegister or 'Sign in / Register' }}</a>
             {% endif %}
 
             <ul id="navigation">
@@ -63,7 +63,7 @@ It receives:
     { id: "companies-you-follow", href: chsMonitorGuiUrl, displayText: lang.companiesYouFollow or "Companies you follow" },
     { id: "basket", href: "/basket", displayText: lang.basket or "Basket" },
     { id: "your-details", href: "/user/account", displayText: lang.manageAccount or "Manage account" },
-    { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" },
+    { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
     ] %}
 
     {{ addNavbar("/signin", menuItems, userDisplayText) }}
