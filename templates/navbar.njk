@@ -1,14 +1,4 @@
 {# 
-A macro that adds a menu navigation bar with the provided items.
-It receives:
-- signInHref: the URL of the sign in / register page
-- menuItems: a collection of objects representing individual menu items.
-    Each object must contain properties with the following keys to build an anchor:
-    - id: it's the anchor element id
-    - href: the URL of the page the menu item will point to
-    - displayText: the text to display in the anchor
-- userDisplayText: a text identifying the logged user, e.g. email address or name
-
 The navbar requires importing language files from the locales folder in ch-node-utils
 and making them available to all Nunjuck templates using the addGlobal() function in app.ts
 It also requires the use of styles provided in the following stylesheet
@@ -20,6 +10,18 @@ styles in your own stylesheet)
 It also requires the following script to be added to the footer
 
     <script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>
+#}
+
+{# 
+A macro that adds a menu navigation bar with the provided items.
+It receives:
+- signInHref: the URL of the sign in / register page
+- menuItems: a collection of objects representing individual menu items.
+    Each object must contain properties with the following keys to build an anchor:
+    - id: it's the anchor element id
+    - href: the URL of the page the menu item will point to
+    - displayText: the text to display in the anchor
+- userDisplayText: a text identifying the logged user, e.g. email address or name
 #}
 {% macro addNavbar(signInHref, menuItems, userDisplayText) %}
     <div class="js-toggle-nav" id="global-nav">
@@ -51,18 +53,6 @@ A macro that adds a menu navigation bar with predefined items.
 It receives:
 - userDisplayText: a text identifying the logged user, e.g. email address or name
 - chsMonitorGuiUrl: the URL for the 'Companies you follow' link
-
-The navbar requires importing language files from the locales folder in ch-node-utils
-and making them available to all Nunjuck templates using the addGlobal() function in app.ts
-It also requires the use of styles provided in the following stylesheet
-(you can either add the provided link to the head section or include specific
-styles in your own stylesheet)
-
-    <link href="{{ cdnHost }}/stylesheets/ch.gov.uk.css" rel="stylesheet"/>
-
-It also requires the following script to be added to the footer
-
-    <script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>
 #}
 {% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
     {% set signInHref = "/signin" %}
