@@ -8,14 +8,10 @@ It receives:
     - href: the URL of the page the menu item will point to
     - displayText: the text to display in the anchor
 - userDisplayText: a text identifying the logged user, e.g. email address or name
-- lang: an optional object with hidden texts and aria labels. If not provided,
-    default texts are used instead. It contains the following keys:
-    - mainNavbar: aria label text for the nav element, default 'The main navigation bar'
-    - clickToExpandOrCollapse: text for the visually hidden part of the anchor text,
-        default 'Click to expand or collapse'
-    - signInOrRegister: the mobile version of sign in anchor, default 'Sign in / Register'
 
-The navbar requires the use of styles provided in the following stylesheet
+The navbar requires importing language files from the locales folder in ch-node-utils
+and making them available to all Nunjuck templates using the addGlobal() function in app.ts
+It also requires the use of styles provided in the following stylesheet
 (you can either add the provided link to the head section or include specific
 styles in your own stylesheet)
 
@@ -23,18 +19,9 @@ styles in your own stylesheet)
 
 It also requires the following script to be added to the footer
 
-    <script>
-        $(document).ready(function () {
-            $("ul#navigation").addClass('mobile-hidden');
-            $(".js-toggle-nav .js-header-toggle").click(function () {
-                event.preventDefault();
-                $("ul#navigation").toggleClass('mobile-hidden');
-                $("#global-nav").toggleClass('open');
-            });
-        });
-    </script>
+    <script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>
 #}
-{% macro addNavbar(signInHref, menuItems, userDisplayText, lang) %}
+{% macro addNavbar(signInHref, menuItems, userDisplayText) %}
     <div class="js-toggle-nav" id="global-nav">
         <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar if lang else 'The main navigation bar' }}">
             {% if userDisplayText %}
@@ -64,14 +51,10 @@ A macro that adds a menu navigation bar with predefined items.
 It receives:
 - userDisplayText: a text identifying the logged user, e.g. email address or name
 - chsMonitorGuiUrl: the URL for the 'Companies you follow' link
-- lang: an optional object with hidden texts and aria labels. If not provided,
-    default texts are used instead. It contains the following keys:
-    - mainNavbar: aria label text for the nav element, default 'The main navigation bar'
-    - clickToExpandOrCollapse: text for the visually hidden part of the anchor text,
-        default 'Click to expand or collapse'
-    - signInOrRegister: the mobile version of sign in anchor, default 'Sign in / Register'
 
-The navbar requires the use of styles provided in the following stylesheet
+The navbar requires importing language files from the locales folder in ch-node-utils
+and making them available to all Nunjuck templates using the addGlobal() function in app.ts
+It also requires the use of styles provided in the following stylesheet
 (you can either add the provided link to the head section or include specific
 styles in your own stylesheet)
 
@@ -79,18 +62,9 @@ styles in your own stylesheet)
 
 It also requires the following script to be added to the footer
 
-    <script>
-        $(document).ready(function () {
-            $("ul#navigation").addClass('mobile-hidden');
-            $(".js-toggle-nav .js-header-toggle").click(function () {
-                event.preventDefault();
-                $("ul#navigation").toggleClass('mobile-hidden');
-                $("#global-nav").toggleClass('open');
-            });
-        });
-    </script>
+    <script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>
 #}
-{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang) %}
+{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
     {% set signInHref = "/signin" %}
     {% set menuItems = [] %}
     {% set menuItems = (menuItems.push({
@@ -130,6 +104,6 @@ It also requires the following script to be added to the footer
         displayText: lang.signOut if lang else "Sign out"
     }), menuItems) %}
 
-    {{ addNavbar(signInHref, menuItems, userDisplayText, lang) }}
+    {{ addNavbar(signInHref, menuItems, userDisplayText) }}
 
 {% endmacro %}
