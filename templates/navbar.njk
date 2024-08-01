@@ -1,7 +1,10 @@
 {#
 GENERAL NOTES:
 The navbar requires importing language files from the locales folder in ch-node-utils
-and making them available to all Nunjuck templates using the addGlobal() function in app.ts
+and making them available to all Nunjuck templates using the addGlobal() function in app.ts.
+It also requires a flag displayAuthorisedAgent set the same way for displaying the 'Authorised agent'
+menu item. If the logged user has ACSP membership, this flag should be set to 'yes'.
+
 It also requires the use of styles provided in the following stylesheet
 (you can either add the provided link to the head section or include specific
 styles in your own stylesheet)
@@ -58,13 +61,16 @@ It receives:
 {% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
     {% set menuItems = [
         { id: "your-companies", href: "/your-companies", displayText: lang.yourCompanies or "Your companies" },
-        { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" },
         { id: "your-filings", href: "/user/transactions", displayText: lang.yourFilings or "Your filings" },
         { id: "companies-you-follow", href: chsMonitorGuiUrl, displayText: lang.companiesYouFollow or "Companies you follow" },
         { id: "basket", href: "/basket", displayText: lang.basket or "Basket" },
         { id: "your-details", href: "/user/account", displayText: lang.manageAccount or "Manage account" },
         { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
     ] %}
+
+    {% if displayAuthorisedAgent === "yes" %}
+        {% set manuItems = (menuItems.splice(1, 0, { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" }), menuItems) %}
+    {% endif %}
 
     {{ addNavbar("/signin", menuItems, userDisplayText) }}
 
