@@ -60,13 +60,14 @@ It receives:
 #}
 {% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
     {% set menuItems = [
+        { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" } if displayAuthorisedAgent === "yes",
         { id: "your-companies", href: "/your-companies", displayText: lang.yourCompanies or "Your companies" },
         { id: "your-filings", href: "/user/transactions", displayText: lang.yourFilings or "Your filings" },
         { id: "companies-you-follow", href: chsMonitorGuiUrl, displayText: lang.companiesYouFollow or "Companies you follow" },
         { id: "basket", href: "/basket", displayText: lang.basket or "Basket" },
         { id: "your-details", href: "/user/account", displayText: lang.manageAccount or "Manage account" },
         { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
-    ] %}
+    ] | reject("falsy") %}
 
     {% if displayAuthorisedAgent === "yes" %}
         {% set manuItems = (menuItems.splice(1, 0, { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" }), menuItems) %}
