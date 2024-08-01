@@ -69,10 +69,6 @@ It receives:
         { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
     ] | reject("falsy") %}
 
-    {% if displayAuthorisedAgent === "yes" %}
-        {% set manuItems = (menuItems.splice(1, 0, { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" }), menuItems) %}
-    {% endif %}
-
     {{ addNavbar("/signin", menuItems, userDisplayText) }}
 
 {% endmacro %}
