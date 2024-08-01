@@ -1,0 +1,74 @@
+{#
+GENERAL NOTES:
+The navbar requires importing language files from the locales folder in ch-node-utils
+and making them available to all Nunjuck templates using the addGlobal() function in app.ts.
+It also requires a flag displayAuthorisedAgent set the same way for displaying the 'Authorised agent'
+menu item. If the logged user has ACSP membership, this flag should be set to 'yes'.
+
+It also requires the use of styles provided in the following stylesheet
+(you can either add the provided link to the head section or include specific
+styles in your own stylesheet)
+
+    <link href="{{ cdnHost }}/stylesheets/ch.gov.uk.css" rel="stylesheet"/>
+
+It also requires the following script to be added to the footer
+
+    <script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>
+#}
+
+{# 
+A macro that adds a menu navigation bar with the provided items.
+It receives:
+- signInHref: the URL of the sign in / register page
+- menuItems: a collection of objects representing individual menu items.
+    Each object must contain properties with the following keys to build an anchor:
+    - id: it's the anchor element id
+    - href: the URL of the page the menu item will point to
+    - displayText: the text to display in the anchor
+- userDisplayText: a text identifying the logged user, e.g. email address or name
+#}
+{% macro addNavbar(signInHref, menuItems, userDisplayText) %}
+    <div class="js-toggle-nav" id="global-nav">
+        <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar or 'The main navigation bar' }}">
+            {% if userDisplayText %}
+                <a href="#navigation" class="js-header-toggle menu">{{ userDisplayText }}
+                    <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse or 'Click to expand or collapse' }}</span>
+                </a>
+            {% else %}
+                <a id="user-signin-mobile" href="{{ signInHref }}" class="sign-in govuk-link">{{ lang.signInOrRegister or 'Sign in / Register' }}</a>
+            {% endif %}
+
+            <ul id="navigation">
+                <li id="signed-in-user" class="user">
+                    {{ userDisplayText }}
+                </li>
+                {% for item in menuItems %}
+                    <li>
+                        <a class="govuk-link" id="{{ item.id }}" href="{{ item.href }}">{{ item.displayText }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+{% endmacro %}
+
+{# 
+A macro that adds a menu navigation bar with predefined items.
+It receives:
+- userDisplayText: a text identifying the logged user, e.g. email address or name
+- chsMonitorGuiUrl: the URL for the 'Companies you follow' link
+#}
+{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
+    {% set menuItems = [
+        { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" } if displayAuthorisedAgent === "yes",
+        { id: "your-companies", href: "/your-companies", displayText: lang.yourCompanies or "Your companies" },
+        { id: "your-filings", href: "/user/transactions", displayText: lang.yourFilings or "Your filings" },
+        { id: "companies-you-follow", href: chsMonitorGuiUrl, displayText: lang.companiesYouFollow or "Companies you follow" },
+        { id: "basket", href: "/basket", displayText: lang.basket or "Basket" },
+        { id: "your-details", href: "/user/account", displayText: lang.manageAccount or "Manage account" },
+        { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
+    ] | reject("falsy") %}
+
+    {{ addNavbar("/signin", menuItems, userDisplayText) }}
+
+{% endmacro %}
