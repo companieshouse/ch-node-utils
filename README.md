@@ -76,3 +76,27 @@ Available as a normal npm dependency([here on npmjs](https://www.npmjs.com/packa
 | ------- | ----------- |
 |`CH_NODE_UTILS_DROP_LANG_QUERY_PARAM`| It could be set to [drop the lang="xx" query param](https://github.com/companieshouse/ch-node-utils/blob/f9e5c47a86206f0b12e4e536c4c459db16747631/src/middleware/manageLocales.middleware.ts#L25) from the current URL ([see Example](https://github.com/companieshouse/docker-chs-development/blob/842c61245adcbba02a6316847fc4f9d94c52410d/services/modules/dissolution/dissolution-web.docker-compose.yaml#L50)) |
 |`CH_NODE_UTILS_LOG_LVL`| It could be set to ["TRACE" or "DEBUG" (case insensitive)](https://github.com/companieshouse/ch-node-utils/blob/24bc717477d21082439d1b460108cb0d60465f0f/src/utils/log.ts#L2) to dump internal info while inside ch-node-utils ([see Example](https://github.com/companieshouse/docker-chs-development/blob/842c61245adcbba02a6316847fc4f9d94c52410d/services/modules/dissolution/dissolution-web.docker-compose.yaml#L49))|
+
+### Menu navigation bar
+A menu navigation bar component has been added to make it easier to add links pointing to new services when needed. There are two Nunjucks macros: one that adds a menu navigation bar with the provided items and another that adds a menu navigation bar with predefined items. The latter internally uses the former and at the moment contains links to the following service:
+
+- Authorised agent
+- Your companies
+- Your filings
+- Companies you follow
+- Basket
+- Manage account
+- Sign out
+
+The "Authorised agent" menu item appears conditionally if the logged user has ACSP membership.
+
+The navbar requires importing language files from the `locales` folder in ch-node-utils and making them available to all Nunjuck templates using the [`addGlobal()` function](https://mozilla.github.io/nunjucks/api.html#addglobal) in `app.ts`. At the moment only English and Welsh language versions are supported. It also requires a flag `displayAuthorisedAgent` set the same way for displaying the "Authorised agent" menu item. If the logged user has ACSP membership, this flag should be set to `'yes'`.
+
+The navbar also requires the use of styles provided in the [ch.gov.uk.css](https://github.com/companieshouse/cdn.ch.gov.uk/blob/master/app/assets/stylesheets/ch.gov.uk.css) stylesheet (you can either add the provided link to the head section or include specific styles in your own stylesheet)
+
+`<link href="{{ cdnHost }}/stylesheets/ch.gov.uk.css" rel="stylesheet"/>`
+
+It also requires the [navbar.js](https://github.com/companieshouse/cdn.ch.gov.uk/blob/master/app/assets/javascripts/lib/navbar.js) script to be added to the footer to make the navbar work in mobile mode
+
+`<script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>`
+
