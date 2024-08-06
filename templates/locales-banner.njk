@@ -29,3 +29,14 @@ It receives:
         </nav>
     </div>
 </div>
+
+<script>
+  function trackLanguageChange(language) {
+    const pageTitle = document.title;
+    if (typeof _paq !== 'undefined') {
+      _paq.push(['trackEvent', pageTitle, 'Language Change', language]);
+    } else {
+      console.log('Matomo not enabled, language change: ' + language);
+    }
+  }
+</script>
