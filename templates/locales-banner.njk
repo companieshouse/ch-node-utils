@@ -3,28 +3,28 @@ template to be reused in all the services to display the locales menu/banner.
 It receives:
 - languageEnabled: to keep all hidden if feature-flag is off
 - languages: array of pairs {.Name (i.e. 'English')   .IsoCode (i.e. 'en') }
-- currentUrl: self-url. It's used to resend to the backend the same request wih the proper
+- currentUrl: self-url. It's used to resend to the backend the same request with the proper
               query parameter ("lang=..") set
               (i.e. https://.....<self>....../?lang=cy)
 #}
 
-<div class="govuk-width-container ">
+<div class="govuk-width-container">
     <div class="govuk-grid-column-full no-padd">
         <nav class="govuk-language-select" aria-label="Language switcher">
             <ul class="govuk-language-select__list">
-            {% if languageEnabled %}
-               {% for l in languages %}
-                 <li class="govuk-language-select__list-item">
-                 {% if lang and lang == l.IsoCode %}
-                   <span class="govuk-body-s govuk-!-margin-2">{{l.Name}}</span>
-                 {% else %}
-                   <a href="{{lang2url.addLangToUrl(currentUrl, l.IsoCode, true)}}" lang={{l.IsoCode}} rel="alternate" class="govuk-link govuk-!-margin-2" >
-                      <span>{{l.Name}}</span>
-                   </a>
-                 {% endif %}
-                 </li>
-               {% endfor %}
-            {% endif %}
+                {% if languageEnabled %}
+                    {% for l in languages %}
+                        <li class="govuk-language-select__list-item">
+                            {% if lang and lang == l.IsoCode %}
+                                <span class="govuk-body-s govuk-!-margin-2">{{ l.Name }}</span>
+                            {% else %}
+                                <a href="{{ lang2url.addLangToUrl(currentUrl, l.IsoCode, true) }}" lang="{{ l.IsoCode }}" rel="alternate" class="govuk-link govuk-!-margin-2" onclick="trackLanguageChange('{{ l.Name }}')">
+                                    <span>{{ l.Name }}</span>
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </nav>
     </div>
