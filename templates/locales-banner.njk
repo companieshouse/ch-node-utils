@@ -18,7 +18,7 @@ It receives:
                             {% if lang and lang == l.IsoCode %}
                                 <span class="govuk-body-s govuk-!-margin-2">{{ l.Name }}</span>
                             {% else %}
-                                <a href="{{ lang2url.addLangToUrl(currentUrl, l.IsoCode, true) }}" lang="{{ l.IsoCode }}" rel="alternate" class="govuk-link govuk-!-margin-2 language-link" data-lang-name="{{ l.Name }}">
+                                <a href="{{ lang2url.addLangToUrl(currentUrl, l.IsoCode, true) }}" lang="{{ l.IsoCode }}" rel="alternate" class="govuk-link govuk-!-margin-2 language-link">
                                     <span>{{ l.Name }}</span>
                                 </a>
                             {% endif %}
