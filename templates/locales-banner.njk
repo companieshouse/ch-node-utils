@@ -36,12 +36,13 @@ It receives:
     
     languageLinks.forEach(link => {
       link.addEventListener('click', function(event) {
-        trackLanguageChange(event, this.dataset.langName);
+        const language = this.getAttribute('lang');
+        trackLanguageChange(language);
       });
     });
   });
 
-  function trackLanguageChange(event, language) {
+  function trackLanguageChange(language) {
     const pageTitle = document.title;
     if (typeof _paq !== 'undefined') {
       _paq.push(['trackEvent', pageTitle, 'Language Change', language]);
