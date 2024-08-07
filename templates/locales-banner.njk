@@ -18,7 +18,7 @@ It receives:
                             {% if lang and lang == l.IsoCode %}
                                 <span class="govuk-body-s govuk-!-margin-2">{{ l.Name }}</span>
                             {% else %}
-                                <a href="{{ lang2url.addLangToUrl(currentUrl, l.IsoCode, true) }}" lang="{{ l.IsoCode }}" rel="alternate" class="govuk-link govuk-!-margin-2" onclick="trackLanguageChange('{{ l.Name }}')">
+                                <a href="{{ lang2url.addLangToUrl(currentUrl, l.IsoCode, true) }}" lang="{{ l.IsoCode }}" rel="alternate" class="govuk-link govuk-!-margin-2 language-link" data-lang-name="{{ l.Name }}">
                                     <span>{{ l.Name }}</span>
                                 </a>
                             {% endif %}
@@ -31,7 +31,17 @@ It receives:
 </div>
 
 <script>
-  function trackLanguageChange(language) {
+  document.addEventListener('DOMContentLoaded', function() {
+    const languageLinks = document.querySelectorAll('.language-link');
+    
+    languageLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        trackLanguageChange(event, this.dataset.langName);
+      });
+    });
+  });
+
+  function trackLanguageChange(event, language) {
     const pageTitle = document.title;
     if (typeof _paq !== 'undefined') {
       _paq.push(['trackEvent', pageTitle, 'Language Change', language]);
