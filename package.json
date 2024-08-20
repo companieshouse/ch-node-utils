@@ -6,7 +6,8 @@
   "types": "./lib/index.d.ts",
   "files": [
     "lib",
-    "templates"
+    "templates",
+    "locales"
   ],
   "description": "set of node utils which can be used across repos/projects",
   "repository": {
