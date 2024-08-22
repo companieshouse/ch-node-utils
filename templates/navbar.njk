@@ -26,6 +26,7 @@ It receives:
     - href: the URL of the page the menu item will point to
     - displayText: the text to display in the anchor
 - userDisplayText: a text identifying the logged user, e.g. email address or name
+- lang: an object containing language-specific strings for localization
 #}
 {% macro addNavbar(signInHref, menuItems, userDisplayText, lang) %}
     <div class="js-toggle-nav" id="global-nav">
@@ -57,6 +58,8 @@ A macro that adds a menu navigation bar with predefined items.
 It receives:
 - userDisplayText: a text identifying the logged user, e.g. email address or name
 - chsMonitorGuiUrl: the URL for the 'Companies you follow' link
+- lang: an object containing language-specific strings for localization
+- displayAuthorisedAgent: a flag indicating whether to display the 'Authorised agent' menu item
 #}
 {% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent) %}
     {% set menuItems = [
