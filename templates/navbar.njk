@@ -26,8 +26,9 @@ It receives:
     - href: the URL of the page the menu item will point to
     - displayText: the text to display in the anchor
 - userDisplayText: a text identifying the logged user, e.g. email address or name
+- lang: an object containing language-specific strings for localization
 #}
-{% macro addNavbar(signInHref, menuItems, userDisplayText) %}
+{% macro addNavbar(signInHref, menuItems, userDisplayText, lang) %}
     <div class="js-toggle-nav" id="global-nav">
         <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar or 'The main navigation bar' }}">
             {% if userDisplayText %}
@@ -57,8 +58,10 @@ A macro that adds a menu navigation bar with predefined items.
 It receives:
 - userDisplayText: a text identifying the logged user, e.g. email address or name
 - chsMonitorGuiUrl: the URL for the 'Companies you follow' link
+- lang: an object containing language-specific strings for localization
+- displayAuthorisedAgent: a flag indicating whether to display the 'Authorised agent' menu item
 #}
-{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl) %}
+{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent) %}
     {% set menuItems = [
         { id: "authorised-agent", href: "/authorised-agent", displayText: lang.authorisedAgent or "Authorised agent" } if displayAuthorisedAgent === "yes",
         { id: "your-companies", href: "/your-companies", displayText: lang.yourCompanies or "Your companies" },
@@ -69,6 +72,6 @@ It receives:
         { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
     ] | reject("falsy") %}
 
-    {{ addNavbar("/signin", menuItems, userDisplayText) }}
+    {{ addNavbar("/signin", menuItems, userDisplayText, lang) }}
 
 {% endmacro %}
