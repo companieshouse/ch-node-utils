@@ -4,6 +4,8 @@ import path    from "path";
 import fs, { readdirSync, lstatSync } from "fs"
 import log from "./log";
 
+const NODE_MODULES_LOCALES_PATH = 'node_modules/@companieshouse/ch-node-utils/locales';
+
 export default class i18nCh {
 
    private static instance: i18nCh
@@ -57,18 +59,36 @@ export default class i18nCh {
 
    //_______________________________________________________________________________________________
    // load all the file names (without extension: ".json") present in 'localesFolder'
-   private loadAllNamespaces (): string[] {
+   private loadAllNamespaces(): string[] {
       const jsonFiles: string[] = [];
 
       if (this.localesFolder) {
-         fs.readdirSync(path.join(this.localesFolder, "en")).forEach((file) => {   // use "en" as the only guaranteed to exist
-            if (path.extname(file) === ".json") {
-               jsonFiles.push (path.basename(file, ".json"));
-            }
-         });
+         // Load from project root
+         this.loadNamespacesFromPath(path.join(this.localesFolder, "en"), jsonFiles);
+
+         // Load from node_modules
+         const nodeModulesPath = path.join(NODE_MODULES_LOCALES_PATH, "en");
+         this.loadNamespacesFromPath(nodeModulesPath, jsonFiles);
       }
+
       return jsonFiles;
    }
+
+   private loadNamespacesFromPath(folderPath: string, jsonFiles: string[]): void {
+      if (fs.existsSync(folderPath)) {
+         fs.readdirSync(folderPath).forEach((file) => {
+            if (path.extname(file) === ".json") {
+               const namespace = path.basename(file, ".json");
+               if (!jsonFiles.includes(namespace)) {
+                  jsonFiles.push(namespace);
+               }
+            }
+         });
+      } else {
+         log(`Path does not exist: ${folderPath}`);
+      }
+   }
+
    //_______________________________________________________________________________________________
    // change to another lang
    private changeLanguage (lang: string) {
@@ -132,4 +152,9 @@ export default class i18nCh {
          })
       }
    }
+
+   public getResourceBundle(lng: string, ns: string): any {
+      return this.i18nInst.getResourceBundle(lng, ns);
+   }
+
 }
