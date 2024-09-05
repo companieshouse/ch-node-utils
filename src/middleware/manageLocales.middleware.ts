@@ -3,8 +3,10 @@ import { QUERY_PAR_LANG } from "../constants/constants"
 import  LocalesService from "../services/locales/locales.service"
 import  LanguageNames  from "../utils/languageNames"
 import log from "../utils/log";
+import { copyLocales } from "../utils/locales";
 
 export function LocalesMiddleware(): RequestHandler {
+   copyLocales();
    return (req: Request, res: Response, next: NextFunction) => {
 
       log("---------- LocalesMiddleware ------------")
