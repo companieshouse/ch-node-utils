@@ -3,6 +3,7 @@ import Backend from "i18next-fs-backend"
 import path    from "path";
 import fs, { readdirSync, lstatSync } from "fs"
 import log from "./log";
+import { NODE_MODULES_LOCALES_PATH } from "../constants/constants";
 
 export default class i18nCh {
 
@@ -57,18 +58,28 @@ export default class i18nCh {
 
    //_______________________________________________________________________________________________
    // load all the file names (without extension: ".json") present in 'localesFolder'
-   private loadAllNamespaces (): string[] {
-      const jsonFiles: string[] = [];
-
-      if (this.localesFolder) {
-         fs.readdirSync(path.join(this.localesFolder, "en")).forEach((file) => {   // use "en" as the only guaranteed to exist
-            if (path.extname(file) === ".json") {
-               jsonFiles.push (path.basename(file, ".json"));
-            }
-         });
+   private loadAllNamespaces(): string[] {
+      if (!this.localesFolder) {
+         return [];
       }
-      return jsonFiles;
+
+      const projectRootNamespaces = this.loadNamespacesFromPath(path.join(this.localesFolder, "en"));
+      const nodeModulesNamespaces = this.loadNamespacesFromPath(path.join(NODE_MODULES_LOCALES_PATH, "en"));
+
+      return [...new Set([...projectRootNamespaces, ...nodeModulesNamespaces])];
    }
+
+   private loadNamespacesFromPath(folderPath: string): string[] {
+      try {
+         return fs.readdirSync(folderPath)
+         .filter(file => path.extname(file) === ".json")
+         .map(file => path.basename(file, ".json"));
+      } catch (error) {
+         log(`Error reading directory ${folderPath}: ${error}`);
+         return [];
+      }
+   }
+
    //_______________________________________________________________________________________________
    // change to another lang
    private changeLanguage (lang: string) {
@@ -132,4 +143,9 @@ export default class i18nCh {
          })
       }
    }
+
+   public getResourceBundle(lng: string, ns: string): any {
+      return this.i18nInst.getResourceBundle(lng, ns);
+   }
+
 }
