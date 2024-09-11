@@ -1,18 +1,17 @@
 import i18next from "i18next"
 import Backend from "i18next-fs-backend"
-import path    from "path";
+import path from "path";
 import fs, { readdirSync, lstatSync } from "fs"
 import log from "./log";
 import { NODE_MODULES_LOCALES_PATH } from "../constants/constants";
 
 export default class i18nCh {
-
    private static instance: i18nCh
    private i18nInst
    private localesFolder
+   private nodeModulesFolder
    private nameSpaces: string[] = [];
 
-   //_______________________________________________________________________________________________
    private constructor(localesFolder = "", nameSpaces: string[] = [], lang = "en") {
       try {
          if (!localesFolder) {
@@ -20,28 +19,31 @@ export default class i18nCh {
             throw new Error("i18nCh initialization error: path to locales must be provided")
          }
          this.localesFolder = localesFolder
-         if ( nameSpaces.length === 0) {
-            nameSpaces =  this.loadAllNamespaces();
+         this.nodeModulesFolder = NODE_MODULES_LOCALES_PATH
+
+         if (nameSpaces.length === 0) {
+            nameSpaces = this.loadAllNamespaces();
          }
          this.nameSpaces = nameSpaces
 
          this.i18nInst = i18next
          this.i18nInst
-            .use(Backend)
-            .init({
+         .use(Backend)
+         .init({
             initImmediate: false, // false = will load the resources synchronously
             ns: nameSpaces,
             partialBundledLanguages: true,
             lng: lang,
             fallbackLng: "en",
-            preload: readdirSync(localesFolder).filter((fileName) => {
-               const joinedPath = path.join(localesFolder, fileName)
-               return lstatSync(joinedPath).isDirectory()
-            }),
+            preload: this.getLanguageFolders(),
             backend: {
-               loadPath: path.join(localesFolder, `{{lng}}/{{ns}}.json`)
+               loadPath: (lng: any, ns: any) => {
+                  const projectPath = path.join(this.localesFolder, `${lng}/${ns}.json`);
+                  const nodePath = path.join(this.nodeModulesFolder, `${lng}/${ns}.json`);
+                  return fs.existsSync(projectPath) ? projectPath : nodePath;
+               }
             }
-            })
+         })
       }
       catch (err) {
          throw err; // propagate
@@ -64,7 +66,7 @@ export default class i18nCh {
       }
 
       const projectRootNamespaces = this.loadNamespacesFromPath(path.join(this.localesFolder, "en"));
-      const nodeModulesNamespaces = this.loadNamespacesFromPath(path.join(NODE_MODULES_LOCALES_PATH, "en"));
+      const nodeModulesNamespaces = this.loadNamespacesFromPath(path.join(this.nodeModulesFolder, "en"));
 
       return [...new Set([...projectRootNamespaces, ...nodeModulesNamespaces])];
    }
@@ -76,6 +78,24 @@ export default class i18nCh {
          .map(file => path.basename(file, ".json"));
       } catch (error) {
          log(`Error reading directory ${folderPath}: ${error}`);
+         return [];
+      }
+   }
+
+   private getLanguageFolders(): string[] {
+      const projectLangs = this.getFoldersFromPath(this.localesFolder);
+      const nodeLangs = this.getFoldersFromPath(this.nodeModulesFolder);
+      return [...new Set([...projectLangs, ...nodeLangs])];
+   }
+
+   private getFoldersFromPath(folderPath: string): string[] {
+      try {
+         return readdirSync(folderPath).filter((fileName) => {
+            const joinedPath = path.join(folderPath, fileName)
+            return lstatSync(joinedPath).isDirectory()
+         });
+      } catch (error) {
+         log(`Error reading language folders from ${folderPath}: ${error}`);
          return [];
       }
    }
