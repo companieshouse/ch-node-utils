@@ -37,7 +37,7 @@ export default class i18nCh {
             fallbackLng: "en",
             preload: this.getLanguageFolders(),
             backend: {
-               loadPath: (lng: any, ns: any) => {
+               loadPath: (lng: string, ns: string) => {
                   const projectPath = path.join(this.localesFolder, `${lng}/${ns}.json`);
                   const nodePath = path.join(this.nodeModulesFolder, `${lng}/${ns}.json`);
                   return fs.existsSync(projectPath) ? projectPath : nodePath;
@@ -61,17 +61,16 @@ export default class i18nCh {
    //_______________________________________________________________________________________________
    // load all the file names (without extension: ".json") present in 'localesFolder'
    private loadAllNamespaces(): string[] {
-      if (!this.localesFolder) {
-         return [];
-      }
+      const allNamespaces = [
+         this.loadNamespacesFromFolder(this.localesFolder),
+         this.loadNamespacesFromFolder(this.nodeModulesFolder)
+      ];
 
-      const projectRootNamespaces = this.loadNamespacesFromPath(path.join(this.localesFolder, "en"));
-      const nodeModulesNamespaces = this.loadNamespacesFromPath(path.join(this.nodeModulesFolder, "en"));
-
-      return [...new Set([...projectRootNamespaces, ...nodeModulesNamespaces])];
+      return [...new Set(allNamespaces.flat())];
    }
 
-   private loadNamespacesFromPath(folderPath: string): string[] {
+   private loadNamespacesFromFolder(baseFolder: string): string[] {
+      const folderPath = path.join(baseFolder, "en");
       try {
          return fs.readdirSync(folderPath)
          .filter(file => path.extname(file) === ".json")
@@ -83,9 +82,11 @@ export default class i18nCh {
    }
 
    private getLanguageFolders(): string[] {
-      const projectLangs = this.getFoldersFromPath(this.localesFolder);
-      const nodeLangs = this.getFoldersFromPath(this.nodeModulesFolder);
-      return [...new Set([...projectLangs, ...nodeLangs])];
+      const allFolders = [
+         this.getFoldersFromPath(this.localesFolder),
+         this.getFoldersFromPath(this.nodeModulesFolder)
+      ];
+      return [...new Set(allFolders.flat())];
    }
 
    private getFoldersFromPath(folderPath: string): string[] {
