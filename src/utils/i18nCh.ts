@@ -1,18 +1,17 @@
 import i18next from "i18next"
 import Backend from "i18next-fs-backend"
-import path    from "path";
+import path from "path";
 import fs, { readdirSync, lstatSync } from "fs"
 import log from "./log";
 import { NODE_MODULES_LOCALES_PATH } from "../constants/constants";
 
 export default class i18nCh {
-
    private static instance: i18nCh
    private i18nInst
    private localesFolder
+   private nodeModulesFolder
    private nameSpaces: string[] = [];
 
-   //_______________________________________________________________________________________________
    private constructor(localesFolder = "", nameSpaces: string[] = [], lang = "en") {
       try {
          if (!localesFolder) {
@@ -20,28 +19,31 @@ export default class i18nCh {
             throw new Error("i18nCh initialization error: path to locales must be provided")
          }
          this.localesFolder = localesFolder
-         if ( nameSpaces.length === 0) {
-            nameSpaces =  this.loadAllNamespaces();
+         this.nodeModulesFolder = NODE_MODULES_LOCALES_PATH
+
+         if (nameSpaces.length === 0) {
+            nameSpaces = this.loadAllNamespaces();
          }
          this.nameSpaces = nameSpaces
 
          this.i18nInst = i18next
          this.i18nInst
-            .use(Backend)
-            .init({
+         .use(Backend)
+         .init({
             initImmediate: false, // false = will load the resources synchronously
             ns: nameSpaces,
             partialBundledLanguages: true,
             lng: lang,
             fallbackLng: "en",
-            preload: readdirSync(localesFolder).filter((fileName) => {
-               const joinedPath = path.join(localesFolder, fileName)
-               return lstatSync(joinedPath).isDirectory()
-            }),
+            preload: this.getLanguageFolders(),
             backend: {
-               loadPath: path.join(localesFolder, `{{lng}}/{{ns}}.json`)
+               loadPath: (lng: string, ns: string) => {
+                  const projectPath = path.join(this.localesFolder, `${lng}/${ns}.json`);
+                  const nodePath = path.join(this.nodeModulesFolder, `${lng}/${ns}.json`);
+                  return fs.existsSync(projectPath) ? projectPath : nodePath;
+               }
             }
-            })
+         })
       }
       catch (err) {
          throw err; // propagate
@@ -59,23 +61,42 @@ export default class i18nCh {
    //_______________________________________________________________________________________________
    // load all the file names (without extension: ".json") present in 'localesFolder'
    private loadAllNamespaces(): string[] {
-      if (!this.localesFolder) {
-         return [];
-      }
+      const allNamespaces = [
+         this.loadNamespacesFromFolder(this.localesFolder),
+         this.loadNamespacesFromFolder(this.nodeModulesFolder)
+      ];
 
-      const projectRootNamespaces = this.loadNamespacesFromPath(path.join(this.localesFolder, "en"));
-      const nodeModulesNamespaces = this.loadNamespacesFromPath(path.join(NODE_MODULES_LOCALES_PATH, "en"));
-
-      return [...new Set([...projectRootNamespaces, ...nodeModulesNamespaces])];
+      return [...new Set(allNamespaces.flat())];
    }
 
-   private loadNamespacesFromPath(folderPath: string): string[] {
+   private loadNamespacesFromFolder(baseFolder: string): string[] {
+      const folderPath = path.join(baseFolder, "en");
       try {
          return fs.readdirSync(folderPath)
          .filter(file => path.extname(file) === ".json")
          .map(file => path.basename(file, ".json"));
       } catch (error) {
          log(`Error reading directory ${folderPath}: ${error}`);
+         return [];
+      }
+   }
+
+   private getLanguageFolders(): string[] {
+      const allFolders = [
+         this.getFoldersFromPath(this.localesFolder),
+         this.getFoldersFromPath(this.nodeModulesFolder)
+      ];
+      return [...new Set(allFolders.flat())];
+   }
+
+   private getFoldersFromPath(folderPath: string): string[] {
+      try {
+         return readdirSync(folderPath).filter((fileName) => {
+            const joinedPath = path.join(folderPath, fileName)
+            return lstatSync(joinedPath).isDirectory()
+         });
+      } catch (error) {
+         log(`Error reading language folders from ${folderPath}: ${error}`);
          return [];
       }
    }
