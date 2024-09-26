@@ -30,10 +30,10 @@ It receives:
 #}
 {% macro addNavbar(signInHref, menuItems, userDisplayText, lang) %}
     <div class="js-toggle-nav" id="global-nav">
-        <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar or 'The main navigation bar' }}">
+        <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar }}">
             {% if userDisplayText %}
                 <a href="#navigation" class="js-header-toggle menu">{{ userDisplayText }}
-                    <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse or 'Click to expand or collapse' }}</span>
+                    <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse }}</span>
                 </a>
             {% else %}
                 <a id="user-signin-mobile" href="{{ signInHref }}" class="sign-in govuk-link">{{ lang.signInOrRegister or 'Sign in / Register' }}</a>

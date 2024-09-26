@@ -1,6 +1,6 @@
 {
-    "mainNavbar": "The main navigation bar",
-    "clickToExpandOrCollapse": "Click to expand or collapse",
+    "mainNavbar": "Menu",
+    "clickToExpandOrCollapse": "Select to show or hide",
     "signInOrRegister": "Sign in / Register",
     "yourCompanies": "Your companies",
     "authorisedAgent": "Authorised agent",
