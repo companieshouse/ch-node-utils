@@ -36,7 +36,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@companieshouse/node-session-handler": "^5.0.1",
+    "@companieshouse/node-session-handler": "^5.1.4",
     "express": "^4.18.3",
     "i18next": "^23.10.1",
     "i18next-fs-backend": "^2.3.1",
