@@ -4,4 +4,4 @@ export const SHARED_NAVBAR_NAMESPACE = "ch-node-utils-navbar"
 export const SHARED_NUNJUCKS_TRANSLATION_NAMESPACES = new Set([
     SHARED_NAVBAR_NAMESPACE
 ]);
-export const ACSP_NUMBER_REGEX = /^[0-9A-Za-z-_]{0,32}$/i;
+export const ACSP_NUMBER_REGEX = /^[0-9A-Z-_]{0,32}$/i;
