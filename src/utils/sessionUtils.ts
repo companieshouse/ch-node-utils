@@ -6,6 +6,5 @@ import * as constants from "../constants/constants";
 export function isAuthorisedAgent (session: Session | undefined): boolean {
     const signInInfo = session?.data?.[SessionKey.SignInInfo];
     const acspNumber = signInInfo?.[SignInInfoKeys.AcspNumber] as string;
-    const regex = new RegExp(constants.ACSP_NUMBER_REGEX_PATTERN);
-    return !!acspNumber && regex.test(acspNumber);
+    return !!acspNumber && constants.ACSP_NUMBER_REGEX.test(acspNumber);
 };
