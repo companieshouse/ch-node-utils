@@ -40,6 +40,8 @@ export function LocalesMiddleware (): RequestHandler {
         res.locals.htmlLang = lang
         res.locals.pageTitleLang = lang
         res.locals.mainLang = lang
+
+        // this flag is required for the navbar
         if (isAuthorisedAgent(req.session)) {
             res.locals.displayAuthorisedAgent = "yes";
         }
