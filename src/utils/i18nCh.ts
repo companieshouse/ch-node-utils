@@ -111,26 +111,34 @@ export default class i18nCh {
 
    //_______________________________________________________________________________________________
    // load all the file names (excluded extension: .json) present in a certain dir
-   public resolveNamespacesKeys (lang: string, vars: any = {}) {
+   public resolveNamespacesKeys (lang: string, vars: any = {}, unescape: boolean = false) {
       let data: any = {};
 
       try {
-          if (this.i18nInst && this.nameSpaces ) {
-             this.changeLanguage (lang)
-             const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
-             if ( keysValuesList !== undefined) {
-                for (const [ns, value] of Object.entries(keysValuesList)) {
-                   log(`${ns}: ${this.nameSpaces}`);
-                   if (this.nameSpaces.includes(ns)) {
-                      log(`${ns}`);
-                      for (const [key] of Object.entries(value)) {
-                         log(`${key}`);
-                         data[key] = this.i18nInst.t(key, {lng: lang, ns: ns, vars});
-                      }
-                   }
-                }
-             }
-          }
+         if (this.i18nInst && this.nameSpaces ) {
+            this.changeLanguage (lang)
+            const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
+            if ( keysValuesList !== undefined) {
+               for (const [ns, value] of Object.entries(keysValuesList)) {
+                  log(`${ns}: ${this.nameSpaces}`);
+                  if (this.nameSpaces.includes(ns)) {
+                     log(`${ns}`);
+                     for (const [key] of Object.entries(value)) {
+                        log(`${key}`);
+                        data[key] = this.i18nInst.t(
+                           key, {
+                              lng: lang,
+                              ns: ns,
+                              ...vars,
+                              interpolation: {
+                                 escapeValue: !unescape // Unescape only if `unescape` is true
+                              }
+                           });
+                     }
+                  }
+               }
+            }
+         }
       }
       catch (err) {
          throw err; // propagate
@@ -140,20 +148,28 @@ export default class i18nCh {
    }
    //_______________________________________________________________________________________________
    // resolve 1 single key
-   public resolveSingleKey (key: string, lang: string, vars: any = {}): string {
-      let t = key
-          if (this.i18nInst) {
-              try {
-                      this.changeLanguage (lang)
-                      t = this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, vars})
-                      log(`searched for key:${key} lang:${lang} and got: ${t}`)
-              }
-              catch (err) {
-                 throw err; // propagate
-              }
+   public resolveSingleKey(key: string, lang: string, vars: any = {}, unescape: boolean = false): string {
+      let t = key;
+      if (this.i18nInst) {
+         try {
+         this.changeLanguage(lang)
+
+         t = <string>this.i18nInst.t(key, {
+            lng: lang,
+            ns: this.nameSpaces,
+            ...vars,
+            interpolation: {
+               escapeValue: !unescape // Unescape only if `unescape` is true
+            }
+         })
+
+         log(`searched for key:${key} lang:${lang} and got: ${t}`)
+         } catch (err) {
+            throw err; // propagate
+         }
       }
       return t
-   }
+    }
    //_______________________________________________________________________________________________
    // load further Namespaces
    public loadNamespaces (nameSpaces: string[] = [])  {
