@@ -110,25 +110,46 @@ export default class i18nCh {
    }
 
    //_______________________________________________________________________________________________
+   // load a Generic key (simple string value or strcutured/nested block)
+   private loadGenericKey (lang: string, ns: string, value: any, vars: any = {}, path = ''): Record<string, any> {
+      let data: Record<string, any> = {};
+
+      for (const [key, val] of Object.entries(value)) {
+         log(`${key}`);
+         const currentPath = path ? `${path}.${key}` : key;
+         if (typeof val === 'object' && val !== null) {
+            data[key] = this.loadGenericKey(lang, ns, val, vars, currentPath);   // Recursively load nested vals
+         } else {
+            data[key] = this.i18nInst.t(currentPath, { lng: lang, ns: ns, ...vars });
+         }
+      }
+
+      return data;
+   }
+
+
+
+   //_______________________________________________________________________________________________
    // load all the file names (excluded extension: .json) present in a certain dir
-   public resolveNamespacesKeys (lang: string, vars: any = {}) {
-      let data: any = {};
+   public resolveNamespacesKeys (lang: string, vars: any = {}): Record<string, any> {
+      let data: Record<string, any> = {};
 
       try {
-          if (this.i18nInst && this.nameSpaces ) {
-             this.changeLanguage (lang)
-             const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
-             if ( keysValuesList !== undefined) {
-                for (const [ns, value] of Object.entries(keysValuesList)) {
-                   log(`${ns}: ${this.nameSpaces}`);
-                   if (this.nameSpaces.includes(ns)) {
-                      log(`${ns}`);
-                      for (const [key] of Object.entries(value)) {
-                         log(`${key}`);
-                         data[key] = this.i18nInst.t(key, {lng: lang, ns: ns, vars});
-                      }
-                   }
-                }
+         if (this.i18nInst && this.nameSpaces ) {
+            this.changeLanguage (lang)
+            const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
+
+            if ( keysValuesList !== undefined) {
+               for (const [ns, value] of Object.entries(keysValuesList)) {
+                  log(`${ns}: ${this.nameSpaces}`);
+                  if (this.nameSpaces.includes(ns)) {
+                     log(`${ns}`);
+                     data = {
+                        ...data,
+                        ...this.loadGenericKey(lang, ns, value, vars)
+                     };
+                  }
+               }
              }
           }
       }
@@ -145,7 +166,7 @@ export default class i18nCh {
           if (this.i18nInst) {
               try {
                       this.changeLanguage (lang)
-                      t = this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, vars})
+                      t = <string>this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, ...vars})
                       log(`searched for key:${key} lang:${lang} and got: ${t}`)
               }
               catch (err) {
