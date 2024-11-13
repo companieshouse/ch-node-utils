@@ -166,7 +166,7 @@ export default class i18nCh {
           if (this.i18nInst) {
               try {
                       this.changeLanguage (lang)
-                      t = this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, ...vars})
+                      t = <string>this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, ...vars})
                       log(`searched for key:${key} lang:${lang} and got: ${t}`)
               }
               catch (err) {
