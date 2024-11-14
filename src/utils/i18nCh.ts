@@ -110,23 +110,18 @@ export default class i18nCh {
    }
 
    //_______________________________________________________________________________________________
-   // load all the file names (excluded extension: .json) present in a certain dir
-   public resolveNamespacesKeys (lang: string, vars: any = {}, unescape: boolean = false) {
-      let data: any = {};
+   // load a Generic key (simple string value or structured/nested block)
+   private loadGenericKey (lang: string, ns: string, value: any, unescape: boolean, vars: any = {}, path = ''): Record<string, any> {
+      let data: Record<string, any> = {};
 
-      try {
-         if (this.i18nInst && this.nameSpaces ) {
-            this.changeLanguage (lang)
-            const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
-            if ( keysValuesList !== undefined) {
-               for (const [ns, value] of Object.entries(keysValuesList)) {
-                  log(`${ns}: ${this.nameSpaces}`);
-                  if (this.nameSpaces.includes(ns)) {
-                     log(`${ns}`);
-                     for (const [key] of Object.entries(value)) {
-                        log(`${key}`);
-                        data[key] = this.i18nInst.t(
-                           key, {
+      for (const [key, val] of Object.entries(value)) {
+         log(`${key}`);
+         const currentPath = path ? `${path}.${key}` : key;
+         if (typeof val === 'object' && val !== null) {
+            data[key] = this.loadGenericKey(lang, ns, val, vars, currentPath);   // Recursively load nested vals
+         } else {
+            data[key] = this.i18nInst.t(
+                           currentPath, {
                               lng: lang,
                               ns: ns,
                               ...vars,
@@ -134,11 +129,35 @@ export default class i18nCh {
                                  escapeValue: !unescape // Unescape only if `unescape` is true
                               }
                            });
-                     }
+         }
+      }
+
+      return data;
+   }
+
+   //_______________________________________________________________________________________________
+   // load all the file names (excluded extension: .json) present in a certain dir
+   public resolveNamespacesKeys (lang: string, vars: any = {}, unescape: boolean = false): Record<string, any> {
+      let data: Record<string, any> = {};
+
+      try {
+         if (this.i18nInst && this.nameSpaces ) {
+            this.changeLanguage (lang)
+            const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
+
+            if ( keysValuesList !== undefined) {
+               for (const [ns, value] of Object.entries(keysValuesList)) {
+                  log(`${ns}: ${this.nameSpaces}`);
+                  if (this.nameSpaces.includes(ns)) {
+                     log(`${ns}`);
+                     data = {
+                        ...data,
+                        ...this.loadGenericKey(lang, ns, value, unescape, vars)
+                     };
                   }
                }
-            }
-         }
+             }
+          }
       }
       catch (err) {
          throw err; // propagate
@@ -169,7 +188,7 @@ export default class i18nCh {
          }
       }
       return t
-    }
+   }
    //_______________________________________________________________________________________________
    // load further Namespaces
    public loadNamespaces (nameSpaces: string[] = [])  {
