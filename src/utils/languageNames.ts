@@ -1,5 +1,5 @@
 import iso6391 from "iso-639-1";
-import SubDirs from "./subDirs.js";
+import SubDirs from "./subDirs";
 
 export class NamedIsoCode {
    constructor(public IsoCode: string, public Name: string) {
