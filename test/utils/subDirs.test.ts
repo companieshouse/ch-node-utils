@@ -1,6 +1,6 @@
 import fs, { Stats } from 'fs';
 import path from 'path';
-import SubDirs from "../../src/utils/SubDirs";
+import SubDirs from "../../src/utils/subDirs";
 
 jest.mock('fs');
 jest.mock('path');
