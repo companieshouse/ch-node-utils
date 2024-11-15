@@ -118,7 +118,7 @@ export default class i18nCh {
          log(`${key}`);
          const currentPath = path ? `${path}.${key}` : key;
          if (typeof val === 'object' && val !== null) {
-            data[key] = this.loadGenericKey(lang, ns, val, vars, currentPath);   // Recursively load nested vals
+            data[key] = this.loadGenericKey(lang, ns, val, unescape, vars, currentPath);   // Recursively load nested vals
          } else {
             data[key] = this.i18nInst.t(
                            currentPath, {
@@ -131,7 +131,6 @@ export default class i18nCh {
                            });
          }
       }
-
       return data;
    }
 
@@ -168,26 +167,27 @@ export default class i18nCh {
    //_______________________________________________________________________________________________
    // resolve 1 single key
    public resolveSingleKey(key: string, lang: string, vars: any = {}, unescape: boolean = false): string {
+
       let t = key;
       if (this.i18nInst) {
          try {
-         this.changeLanguage(lang)
 
-         t = <string>this.i18nInst.t(key, {
-            lng: lang,
-            ns: this.nameSpaces,
-            ...vars,
-            interpolation: {
-               escapeValue: !unescape // Unescape only if `unescape` is true
-            }
-         })
+            this.changeLanguage(lang);
+            t = <string>this.i18nInst.t(key, {
+                lng: lang,
+                ns: this.nameSpaces,
+                ...vars,
+                interpolation: {
+                    escapeValue: !unescape // Unescape only if `unescape` is true
+                }
+            });
 
-         log(`searched for key:${key} lang:${lang} and got: ${t}`)
+            log(`searched for key:${key} lang:${lang} and got: ${t}`);
          } catch (err) {
             throw err; // propagate
          }
       }
-      return t
+      return t;
    }
    //_______________________________________________________________________________________________
    // load further Namespaces
