@@ -22,9 +22,12 @@ lint:
 security-check:
 	npm audit
 
-.PHONY: test
-test:
+.PHONY: test-unit
+test-unit:
 	npm run coverage
+
+.PHONY: test
+test: test-unit
 
 .PHONY: sonar
 sonar:
