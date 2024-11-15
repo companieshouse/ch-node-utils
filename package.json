@@ -21,7 +21,6 @@
     "lint": "eslint '{src,test}/**/*'",
     "lint:fix": "eslint '{src,test}/**/*' --fix",
     "coverage": "jest --coverage --forceExit --passWithNoTests",
-    "test:coverage": "echo 'would execute: nyc --check-coverage --reporter=text-summary npm run test'",
     "prepublishOnly": "[ ! -d node_modules ] && npm install; tsc",
     "postpublish": "rm -rf lib"
   },
