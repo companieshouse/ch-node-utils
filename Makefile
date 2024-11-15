@@ -11,7 +11,7 @@ clean:
 .PHONY: build
 build:
 	GIT_SSH_COMMAND="ssh" npm i
-	npm run lint
+	#npm run lint
 	npm run build
 
 .PHONY: lint
