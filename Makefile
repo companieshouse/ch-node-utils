@@ -29,8 +29,8 @@ test-unit:
 .PHONY: test
 test: test-unit
 
-#.PHONY: sonar
-#sonar:
+.PHONY: sonar
+sonar:
 #	npm run analyse-code
 
 .PHONY: package
