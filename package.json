@@ -18,8 +18,8 @@
     "prebuild": "rm -rf ./lib",
     "build": "tsc",
     "test": "jest",
-    "lint": "eslint '{src,test}/**/*'",
-    "lint:fix": "eslint '{src,test}/**/*' --fix",
+    "_lint": "eslint '{src,test}/**/*'",
+    "_lint:fix": "eslint '{src,test}/**/*' --fix",
     "coverage": "jest --coverage --forceExit --passWithNoTests",
     "prepublishOnly": "[ ! -d node_modules ] && npm install; tsc",
     "postpublish": "rm -rf lib"
