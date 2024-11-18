@@ -1,0 +1,10 @@
+{
+    "structured": {
+        "serviceName": "diddymu cwmni",
+        "bundleId":  "1.2.{{var1}}",
+        "fileId":  "1",
+        "ver":  "4.5.6"
+    },
+    "fixedText": "Gwneud cais i ddileu cwmni o'r gofrestr a'i ddiddymu",
+    "variableText": "Gwneud cais i ddileu cwmni o'r gofrestr a'i ddiddymu {{var1}} {{var2}} {{var3}} <a href=http:/somehost/someendpoint>some link</a>"
+}

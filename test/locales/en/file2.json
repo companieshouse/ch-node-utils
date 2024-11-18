@@ -1,0 +1,5 @@
+{
+      "T1_P100":  "Use this service to apply to close a public limited company, a private limited company, or a limited liability partnership (LLP).",
+      "T1_P200":  "For companies with multiple directors, {{vars.var1}} more than half of the directors {{vars.var2}}need to sign the application before it can be submitted.",
+      "T1_P300":  "It costs £8 and you'll {{vars.var3}} need:"
+}

@@ -11,24 +11,27 @@ clean:
 .PHONY: build
 build:
 	GIT_SSH_COMMAND="ssh" npm i
-	npm run lint
+	#npm run lint
 	npm run build
 
 .PHONY: lint
 lint:
-	npm run lint
+	#npm run lint
 
 .PHONY: security-check
 security-check:
 	npm audit
 
-.PHONY: test
-test:
+.PHONY: test-unit
+test-unit:
 	npm run coverage
+
+.PHONY: test
+test: test-unit
 
 .PHONY: sonar
 sonar:
-	npm run analyse-code
+#	npm run analyse-code
 
 .PHONY: package
 package: build

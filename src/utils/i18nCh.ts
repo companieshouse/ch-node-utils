@@ -110,28 +110,33 @@ export default class i18nCh {
    }
 
    //_______________________________________________________________________________________________
-   // load a Generic key (simple string value or strcutured/nested block)
-   private loadGenericKey (lang: string, ns: string, value: any, vars: any = {}, path = ''): Record<string, any> {
+   // load a Generic key (simple string value or structured/nested block)
+   private loadGenericKey (lang: string, ns: string, value: any, unescape: boolean, vars: any = {}, path = ''): Record<string, any> {
       let data: Record<string, any> = {};
 
       for (const [key, val] of Object.entries(value)) {
          log(`${key}`);
          const currentPath = path ? `${path}.${key}` : key;
          if (typeof val === 'object' && val !== null) {
-            data[key] = this.loadGenericKey(lang, ns, val, vars, currentPath);   // Recursively load nested vals
+            data[key] = this.loadGenericKey(lang, ns, val, unescape, vars, currentPath);   // Recursively load nested vals
          } else {
-            data[key] = this.i18nInst.t(currentPath, { lng: lang, ns: ns, ...vars });
+            data[key] = this.i18nInst.t(
+                           currentPath, {
+                              lng: lang,
+                              ns: ns,
+                              ...vars,
+                              interpolation: {
+                                 escapeValue: !unescape // Unescape only if `unescape` is true
+                              }
+                           });
          }
       }
-
       return data;
    }
 
-
-
    //_______________________________________________________________________________________________
    // load all the file names (excluded extension: .json) present in a certain dir
-   public resolveNamespacesKeys (lang: string, vars: any = {}): Record<string, any> {
+   public resolveNamespacesKeys (lang: string, vars: any = {}, unescape: boolean = false): Record<string, any> {
       let data: Record<string, any> = {};
 
       try {
@@ -146,7 +151,7 @@ export default class i18nCh {
                      log(`${ns}`);
                      data = {
                         ...data,
-                        ...this.loadGenericKey(lang, ns, value, vars)
+                        ...this.loadGenericKey(lang, ns, value, unescape, vars)
                      };
                   }
                }
@@ -161,19 +166,28 @@ export default class i18nCh {
    }
    //_______________________________________________________________________________________________
    // resolve 1 single key
-   public resolveSingleKey (key: string, lang: string, vars: any = {}): string {
-      let t = key
-          if (this.i18nInst) {
-              try {
-                      this.changeLanguage (lang)
-                      t = <string>this.i18nInst.t(key, {lng: lang, ns: this.nameSpaces, ...vars})
-                      log(`searched for key:${key} lang:${lang} and got: ${t}`)
-              }
-              catch (err) {
-                 throw err; // propagate
-              }
+   public resolveSingleKey(key: string, lang: string, vars: any = {}, unescape: boolean = false): string {
+
+      let t = key;
+      if (this.i18nInst) {
+         try {
+
+            this.changeLanguage(lang);
+            t = <string>this.i18nInst.t(key, {
+                lng: lang,
+                ns: this.nameSpaces,
+                ...vars,
+                interpolation: {
+                    escapeValue: !unescape // Unescape only if `unescape` is true
+                }
+            });
+
+            log(`searched for key:${key} lang:${lang} and got: ${t}`);
+         } catch (err) {
+            throw err; // propagate
+         }
       }
-      return t
+      return t;
    }
    //_______________________________________________________________________________________________
    // load further Namespaces
