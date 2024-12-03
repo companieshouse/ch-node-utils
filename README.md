@@ -82,14 +82,14 @@ Available as a normal npm dependency([here on npmjs](https://www.npmjs.com/packa
 A menu navigation bar component has been added to make it easier to add links pointing to new services when needed. There are two Nunjucks macros: one that adds a menu navigation bar with the provided items and another that adds a menu navigation bar with predefined items. The latter internally uses the former and currently contains links to the following services:
 
 - Authorised agent (conditional)
-- Your companies
+- Your companies (conditional)
 - Your filings
 - Companies you follow
 - Basket
 - Manage account
 - Sign out
 
-The "Authorised agent" menu item appears conditionally if the logged user has ACSP membership.
+The "Authorised agent" menu item appears conditionally if the logged user has ACSP membership. The "Your companies" menu items appears conditionally until the service is live.
 
 #### Usage
 
@@ -107,6 +107,7 @@ The macro requires the following parameters:
 - `chsMonitorGuiUrl`: The URL for the "Companies you follow" link
 - `lang`: An object containing language-specific strings for localization
 - `displayAuthorisedAgent`: A flag for displaying the "Authorised agent" menu item. If the logged user has ACSP membership, this flag should be set to `'yes'`. If your service uses i18 middleware provided in the `@companieshouse/ch-node-utils` package, then this flag will be set to the correct value automatically. If not, you can use `isAuthorisedAgent` function from `./utils/sessionUtils`.
+- `displayYourCompanies`: A flag for displaying the "Your companies" menu item. It should be set to `'yes` if this menu iten needs to be displayed.
 
 #### Localization
 
