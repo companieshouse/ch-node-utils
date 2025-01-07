@@ -1,13 +1,13 @@
 {
-    "mainNavbar": "Y prif far llywio",
-    "clickToExpandOrCollapse": "Cliciwch i ehangu neu gwympo",
-    "signInOrRegister": "Mewngofnodwch / Cofrestrwch",
-    "yourCompanies": "Eich cwmnïau",
     "authorisedAgent": "Asiant awdurdodedig",
-    "yourFilings": "Eich ffeilio",
-    "companiesYouFollow": "Cwmnïau rydych yn dilyn",
     "basket": "Basged",
+    "clickToExpandOrCollapse": "Cliciwch i ehangu neu gwympo",
+    "companiesYouFollow": "Cwmnïau rydych yn dilyn",
+    "mainNavbar": "Y prif far llywio",
     "manageAccount": "Rheoli cyfrif",
+    "signInOrRegister": "Mewngofnodwch / Cofrestrwch",
     "signOut": "Allgofnodi",
-    "userManagementAdmin": "Gweinyddwr rheoli defnyddwyr"
+    "userManagementAdmin": "Gweinyddwr rheoli defnyddwyr",
+    "yourCompanies": "Eich cwmnïau",
+    "yourFilings": "Eich ffeilio"
 }
