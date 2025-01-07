@@ -1,12 +1,13 @@
 {
-    "mainNavbar": "Menu",
-    "clickToExpandOrCollapse": "Select to show or hide",
-    "signInOrRegister": "Sign in / Register",
-    "yourCompanies": "Your companies",
     "authorisedAgent": "Authorised agent",
-    "yourFilings": "Your filings",
-    "companiesYouFollow": "Companies you follow",
     "basket": "Basket",
+    "clickToExpandOrCollapse": "Select to show or hide",
+    "companiesYouFollow": "Companies you follow",
+    "mainNavbar": "Menu",
     "manageAccount": "Manage account",
-    "signOut": "Sign out"
+    "signInOrRegister": "Sign in / Register",
+    "signOut": "Sign out",
+    "userManagementAdmin": "User management admin",
+    "yourCompanies": "Your companies",
+    "yourFilings": "Your filings"
 }
