@@ -9,10 +9,11 @@ export function LocalesMiddleware (): RequestHandler {
     return (req: Request, res: Response, next: NextFunction) => {
 
         log("---------- LocalesMiddleware ------------")
-        let lang: string | undefined = (<string>req.query[QUERY_PAR_LANG] ||
-            req.body.lang ||
-            req.session?.getExtraData<string>(QUERY_PAR_LANG))
-        log(`LocalesMiddleware ....(init with received values: lang=${lang}) - body:${req.body.lang})`)
+        let lang: string | undefined =
+            (<string>req.query[QUERY_PAR_LANG]) ||
+            req.body?.lang ||
+            req.session?.getExtraData<string>(QUERY_PAR_LANG);
+            log(`LocalesMiddleware ....(init with received values: lang=${lang}) - body:${req.body?.lang ?? 'N/A'})`)
         if (lang === undefined || !LanguageNames.isSupportedLocale(LocalesService.getInstance().localesFolder, lang)) {
             lang = "en"
         }
