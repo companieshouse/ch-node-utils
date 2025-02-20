@@ -1,0 +1,37 @@
+
+{% if templateOptions.baseTemplate %}
+  {% extends templateOptions.baseTemplate %}
+{% endif %}
+
+{% set pageTitle = templateOptions.whatIsOfficeAddress %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "address/includes/errors.njk" %}
+
+      <div>
+        {% include "address/includes/proposed-name.njk" %}
+
+        <h1 class="govuk-heading-xl">{{ templateOptions.whatIsOfficeAddress }}</h1>
+        <p class="govuk-hint">{{ templateOptions.officialCommunication }}</p>
+
+        {% if templateOptions.partnership_type == "LP" or templateOptions.partnership_type == "PFLP" %}
+          <p class="govuk-hint">{{ templateOptions.england.physicalAddress }}</p>
+          <p class="govuk-hint">{{ templateOptions.england.jurisdiction }}</p>
+        {% else  %}
+          <p class="govuk-hint">{{ templateOptions.scotland.physicalAddress }}</p>
+          <p class="govuk-hint">{{ templateOptions.scotland.jurisdiction }}</p>
+        {% endif %}
+      </div>
+
+      {% include "address/includes/postcode-form.njk" %}
+
+    <div>
+      {{ govukInsetText({
+        html: "<h2 class='govuk-heading-m'>" + templateOptions.publicRegisterTitle | escape + "</h2> <p>" + templateOptions.publicRegisterLine1 | escape + "</p>"
+      }) }}
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% import 'address/includes/macros.njk' as macros %}
+
+{% set postcodeErrorMessage = macros.htmlInputErrorMessage(i18n.address.findPostcode.errorPostcode) %}
+
+{% set postalCodeErrorMessage = null %}
+
+{% if templateOptions.errors.errorList.length > 0 %}
+  {% for el in templateOptions.errors.errorList %}
+    {% if el.href === "#postal_code" %}
+      {% set postalCodeErrorMessage = { text: el.text } %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<form class="form" method="post">
+    <input type="hidden" name="pageType" value={{ templateOptions.templateName }}>      
+    {% include "address/includes/csrf_token.njk" %}
+
+
+    <div class="govuk-!-margin-top-8">
+        {{ govukInput({
+            hint: {
+                text: templateOptions.nameOrNumberHint
+            },
+            id: "premises",
+            name: "premises",
+            value: templateOptions.data.premises,
+            attributes : {
+                "data-event-id": "name-or-number"
+            }
+        }) }}
+
+        {{ govukInput({
+            hint: {
+                text: templateOptions.postcodeHint
+            },
+            id: "postal_code",
+            name: "postal_code",
+            classes: "govuk-input--width-10",
+            value: templateOptions.data.postal_code,
+            attributes: {
+                required: true,
+                "data-event-id": "postcode",
+                oninvalid: postcodeErrorMessage,
+                onclick: "this.setCustomValidity('')"
+            },
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
+            errorMessage: postalCodeErrorMessage
+        }) }}
+
+        <p>
+            <a href="{{ templateOptions.enterManualAddressUrl }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ templateOptions.enterAddressManually }}</a>
+        <p>
+
+        {{ govukButton({
+            text: templateOptions.findAddress,
+            attributes: {
+                "id": "submit",
+                "data-event-id": "find-address"
+            }
+        }) }}
+    </div>
+</form>

@@ -1,0 +1,9 @@
+{% if templateOptions.errors and templateOptions.errors.errorList.length > 0 %}
+  {{ govukErrorSummary({
+    titleText: templateOptions.govUk.error.title,
+    errorList: templateOptions.errors.errorList,
+    attributes: {
+      "tabindex": "0"
+    }
+  }) }}
+{% endif %}

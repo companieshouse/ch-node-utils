@@ -1,0 +1,92 @@
+{% macro formatAddress(address) %}
+  {% set premises = '' %}
+  {% set address_line_1 = '' %}
+  {% set address_line_2 = '' %}
+  {% set locality = '' %}
+
+  {% if address.premises %}
+    {% set premises = capitalizeEachWord(address.premises) + ' ' %}
+  {% endif %}
+
+  {% if address.address_line_1 %} 
+    {% set address_line_1 = capitalizeEachWord(address.address_line_1) + ', ' %} 
+  {% endif %}
+
+  {% if address.address_line_2 %} 
+    {% set address_line_2 = capitalizeEachWord(address.address_line_2) + ', ' %} 
+  {% endif %}
+
+  {% if address.locality %} 
+    {% set locality = capitalizeEachWord(address.locality) + ', ' %} 
+  {% endif %}
+
+  {% set address = premises + address_line_1 + address_line_2 + locality + address.postal_code %}
+
+  {{ address }}
+{% endmacro %}
+
+{%- macro capitalizeEachWord(str) -%}
+  {%- set words = str.split(' ') -%}
+  {%- set capitalizedWords = [] -%}
+  {%- for word in words -%}
+    {%- set subwords = word.split('-') -%}
+    {%- set capitalizedSubwords = [] -%}
+    {%- for subword in subwords -%}
+      {%- set capitalizedSubword = subword | capitalize -%}
+      {%- set capitalizedSubwords = capitalizedSubwords.concat(capitalizedSubword) -%}
+    {%- endfor -%}
+    {%- set capitalizedWord = capitalizedSubwords.join('-') -%}
+    {%- set capitalizedWords = capitalizedWords.concat(capitalizedWord) -%}
+  {%- endfor -%}
+  {{- capitalizedWords.join(' ') -}}
+{%- endmacro -%}
+
+{%- macro mapCountry(countryCode) -%}
+  {%- if countryCode == "GB-ENG" -%}
+    {%- set country = "England" -%}
+  {%- elif countryCode == "GB-WLS" -%}
+    {%- set country = "Wales" -%}
+  {%- elif countryCode == "GB-SCT" -%}
+    {%- set country = "Scotland" -%}
+  {%- elif countryCode == "GB-NIR" -%}
+    {%- set country = "Northern Ireland" -%}
+  {%- elif countryCode == "border" -%}
+    {%- set country = "" -%}
+  {%- else -%}
+    {%- set country = countryCode -%}
+  {%- endif -%}
+  {{- country -}}
+{%- endmacro -%}
+
+{% macro htmlInputErrorMessage(message, page, field) %}
+
+  {% set event = "_paq.push(['trackEvent', 'Limited Partnerships "+ page +"', '"+ field +"', 'Error: " + message + "']);" %}
+  {% set validation = "this.setCustomValidity('" + message + "');" %}
+
+  {% set errorMessage = event + validation %}
+
+  {{ errorMessage }}
+{% endmacro %}
+
+{% macro htmlOptionErrorMessage(message, page, field, sendEvent) %}
+  {% set condition = "document.querySelectorAll('input[name=" + field + "]:checked').length === 0" %}
+
+  {% set event = "" %}
+  {% set validation = "this.setCustomValidity('')" %}
+
+  {% if condition %}
+    {% set validation = "this.setCustomValidity('" + message + "')" %}
+
+    {% if sendEvent %}
+      {% set event = "_paq.push(['trackEvent', 'Limited Partnerships " + page + "', '" + field + "', 'Error: " + message + "']);" %}
+    {% endif %}
+
+  {% else %}
+    {% set event = "" %}
+    {% set validation = "this.setCustomValidity('')" %}
+  {% endif %}
+  
+  {% set errorMessage = event + validation %}
+
+  {{ errorMessage }}
+{% endmacro %}
