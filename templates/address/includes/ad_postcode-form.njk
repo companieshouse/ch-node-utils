@@ -1,6 +1,6 @@
 {% import 'includes/ad_macros.njk' as macros %}
 
-{% set postcodeErrorMessage = macros.htmlInputErrorMessage(i18n.address.findPostcode.errorPostcode) %}
+{% set postcodeErrorMessage = macros.htmlInputErrorMessage(templateOptions.postcodeErrorMessage) %}
 
 {% set postalCodeErrorMessage = null %}
 
