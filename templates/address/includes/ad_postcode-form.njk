@@ -1,4 +1,4 @@
-{% import 'address/includes/macros.njk' as macros %}
+{% import 'includes/ad_macros.njk' as macros %}
 
 {% set postcodeErrorMessage = macros.htmlInputErrorMessage(i18n.address.findPostcode.errorPostcode) %}
 
@@ -14,7 +14,7 @@
 
 <form class="form" method="post">
     <input type="hidden" name="pageType" value={{ templateOptions.templateName }}>      
-    {% include "address/includes/csrf_token.njk" %}
+    {% include "includes/ad_csrf_token.njk" %}
 
 
     <div class="govuk-!-margin-top-8">
