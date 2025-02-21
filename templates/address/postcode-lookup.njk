@@ -15,14 +15,13 @@
         {% include "includes/ad_proposed-name.njk" %}
 
         <h1 class="govuk-heading-xl">{{ templateOptions.whatIsOfficeAddress }}</h1>
-        <p class="govuk-hint">{{ templateOptions.officialCommunication }}</p>
+        <p class="govuk-hint">{{ templateOptions.hint1 }}</p>
 
-        {% if templateOptions.partnership_type == "LP" or templateOptions.partnership_type == "PFLP" %}
-          <p class="govuk-hint">{{ templateOptions.england.physicalAddress }}</p>
-          <p class="govuk-hint">{{ templateOptions.england.jurisdiction }}</p>
-        {% else  %}
-          <p class="govuk-hint">{{ templateOptions.scotland.physicalAddress }}</p>
-          <p class="govuk-hint">{{ templateOptions.scotland.jurisdiction }}</p>
+        {% if templateOptions.hint2 %}
+          <p class="govuk-hint">{{ templateOptions.hint2 }}</p>
+        {% endif %}
+        {% if templateOptions.hint3 %}
+          <p class="govuk-hint">{{ templateOptions.hint3 }}</p>
         {% endif %}
       </div>
 
