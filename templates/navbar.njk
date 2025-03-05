@@ -32,22 +32,17 @@ It receives:
     <div class="js-toggle-nav" id="global-nav">
         <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar }}">
             {% if userDisplayText %}
-                <button type="button" class="js-header-toggle menu" aria-expanded="false" aria-controls="navigation">
-                    {{ userDisplayText }}
+                <a href="#navigation" class="js-header-toggle menu">{{ userDisplayText }}
                     <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse }}</span>
-                </button>
-            {% else %}
-                <a id="user-signin-mobile" href="{{ signInHref }}" class="sign-in govuk-link">
-                    {{ lang.signInOrRegister or 'Sign in / Register' }}
                 </a>
+            {% else %}
+                <a id="user-signin-mobile" href="{{ signInHref }}" class="sign-in govuk-link">{{ lang.signInOrRegister or 'Sign in / Register' }}</a>
             {% endif %}
 
-            <ul id="navigation" class="nav-menu" hidden>
-                {% if userDisplayText %}
-                    <li id="signed-in-user" class="user" aria-hidden="true">
-                        {{ userDisplayText }}
-                    </li>
-                {% endif %}
+            <ul id="navigation">
+                <li id="signed-in-user" class="user">
+                    {{ userDisplayText }}
+                </li>
                 {% for item in menuItems %}
                     <li>
                         <a class="govuk-link" id="{{ item.id }}" href="{{ item.href }}">{{ item.displayText }}</a>
