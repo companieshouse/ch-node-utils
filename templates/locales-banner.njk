@@ -35,7 +35,7 @@ It receives:
     </div>
 </div>
 
-<script>
+<script {% if cspNonce %} nonce={{ cspNonce | dump | safe }} {% endif %}>
   document.addEventListener('DOMContentLoaded', function() {
     const languageLinks = document.querySelectorAll('.language-link');
 
