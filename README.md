@@ -109,6 +109,7 @@ The macro requires the following parameters:
 - `displayAuthorisedAgent`: A flag for displaying the "Authorised agent" menu item. If the logged user has ACSP membership, this flag should be set to `'yes'`. If your service uses i18 middleware provided in the `@companieshouse/ch-node-utils` package, then this flag will be set to the correct value automatically. If not, you can use `isAuthorisedAgent` function from `./utils/sessionUtils`.
 - `displayYourCompanies`: A flag for displaying the "Your companies" menu item. It should be set to `'yes` if this menu iten needs to be displayed.
 - `displayUserManagementAdmin`: A flag for displaying the "User management admin" menu item. It should be set to `'yes` if this menu iten needs to be displayed.
+- `pageLanguage`: The language code for the page. (e.g. `'en'` or `'cy'`). This allows the language to be kept after navigating to the new service.
 
 #### Localization
 
