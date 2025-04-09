@@ -64,7 +64,7 @@ It receives:
 - displayUserManagementAdmin: a flag indicating whether to display the 'User management admin' menu item
 - pageLanguage: the language code for the page (e.g. 'en', 'cy')
 #}
-{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent, displayYourCompanies, displayUserManagementAdmin, pageLanguage) %}
+{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent, displayYourCompanies, displayUserManagementAdmin, pageLanguage="en") %}
     {% set menuItems = [
         { id: "user-management-admin", href: "/identity-verification?lang=" + pageLanguage, displayText: lang.userManagementAdmin or "User management admin" } if displayUserManagementAdmin === "yes",
         { id: "authorised-agent", href: "/authorised-agent?lang=" + pageLanguage, displayText: lang.authorisedAgent or "Authorised agent" } if displayAuthorisedAgent === "yes",
