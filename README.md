@@ -110,6 +110,7 @@ The macro requires the following parameters:
 - `displayYourCompanies`: A flag for displaying the "Your companies" menu item. It should be set to `'yes` if this menu iten needs to be displayed.
 - `displayUserManagementAdmin`: A flag for displaying the "User management admin" menu item. It should be set to `'yes` if this menu iten needs to be displayed.
 - `pageLanguage`: The language code for the page. (e.g. `'en'` or `'cy'`). This allows the language to be kept after navigating to the new service.
+- `accountUrl`: base URL to account service - ACCOUNT_URL
 
 #### Localization
 

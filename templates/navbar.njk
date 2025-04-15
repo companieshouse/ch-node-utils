@@ -63,8 +63,9 @@ It receives:
 - displayYourCompanies: a flag indicating whether to display the 'Your companies' menu item
 - displayUserManagementAdmin: a flag indicating whether to display the 'User management admin' menu item
 - pageLanguage: the language code for the page (e.g. 'en', 'cy')
+- accountUrl: base URL to account service - ACCOUNT_URL
 #}
-{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent, displayYourCompanies, displayUserManagementAdmin, pageLanguage="en") %}
+{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent, displayYourCompanies, displayUserManagementAdmin, pageLanguage="en", accountUrl) %}
     {% set menuItems = [
         { id: "user-management-admin", href: "/identity-verification?lang=" + pageLanguage, displayText: lang.userManagementAdmin or "User management admin" } if displayUserManagementAdmin === "yes",
         { id: "authorised-agent", href: "/authorised-agent?lang=" + pageLanguage, displayText: lang.authorisedAgent or "Authorised agent" } if displayAuthorisedAgent === "yes",
@@ -72,7 +73,7 @@ It receives:
         { id: "your-filings", href: "/user/transactions?lang=" + pageLanguage, displayText: lang.yourFilings or "Your filings" },
         { id: "companies-you-follow", href: chsMonitorGuiUrl, displayText: lang.companiesYouFollow or "Companies you follow" },
         { id: "basket", href: "/basket?lang=" + pageLanguage, displayText: lang.basket or "Basket" },
-        { id: "your-details", href: "/user/account?lang=" + pageLanguage, displayText: lang.manageAccount or "Manage account" },
+        { id: "your-details", href: accountUrl + "/user/account?lang=" + pageLanguage, displayText: lang.manageAccount or "Manage account" },
         { id: "user-signout", href: "/signout", displayText: lang.signOut or "Sign out" }
     ] | reject("falsy") %}
 
