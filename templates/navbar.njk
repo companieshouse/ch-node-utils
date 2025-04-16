@@ -32,7 +32,8 @@ It receives:
     <div class="js-toggle-nav" id="global-nav">
         <nav role="navigation" class="content" aria-label="{{ lang.mainNavbar }}">
             {% if userDisplayText %}
-                <a href="#navigation" class="js-header-toggle menu">{{ userDisplayText }}
+                <a href="#navigation" role="button" aria-expanded="false" class="js-header-toggle menu">
+                    {{ userDisplayText }}
                     <span class="govuk-visually-hidden">{{ lang.clickToExpandOrCollapse }}</span>
                 </a>
             {% else %}
@@ -65,7 +66,7 @@ It receives:
 - pageLanguage: the language code for the page (e.g. 'en', 'cy')
 - accountUrl: base URL to account service - ACCOUNT_URL
 #}
-{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent, displayYourCompanies, displayUserManagementAdmin, pageLanguage="en", accountUrl) %}
+{% macro addPredefinedNavbar(userDisplayText, chsMonitorGuiUrl, lang, displayAuthorisedAgent, displayYourCompanies, displayUserManagementAdmin, pageLanguage = "en", accountUrl) %}
     {% set menuItems = [
         { id: "user-management-admin", href: "/identity-verification?lang=" + pageLanguage, displayText: lang.userManagementAdmin or "User management admin" } if displayUserManagementAdmin === "yes",
         { id: "authorised-agent", href: "/authorised-agent?lang=" + pageLanguage, displayText: lang.authorisedAgent or "Authorised agent" } if displayAuthorisedAgent === "yes",
