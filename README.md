@@ -5,6 +5,21 @@ Available as a normal npm dependency([here on npmjs](https://www.npmjs.com/packa
 
 ## Areas for the different utilities stored in this repo:
 
+### Page template layout
+
+Use this template to keep your pages consistent with the rest of Companies House.
+
+This page template combines the boilerplate markup and components needed for a basic Companies House page. It includes:
+
+- the favicon, and other related theme icons
+- the Skip link component, Header component and Footer component
+- GOV.UK Frontend CSS and JavaScript for all GOV.UK Design System components
+
+[Read more about how to use the page template layout](./docs/page-template.md#getting-started)
+
+![Screenshot of the Page Template Layout](./docs/page-template-screenshot.png)
+
+
 ### i18n (Internationalisation)
 
   Internationalisation has been added to CHS, after already being available (at least for Welsh) on legacy systems (EWF/SCRS/CHD/...)
