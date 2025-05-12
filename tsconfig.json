@@ -1,11 +1,11 @@
 {
    "compilerOptions": {
      "target": "es6",
-     "module": "commonjs",
+     "module": "NodeNext",
      "strict": true,
      "outDir": "./lib",
      "declaration": true,
-     "moduleResolution": "node",
+     "moduleResolution": "nodenext",
      "noUnusedLocals": true,
      "noUnusedParameters": true,
      "noImplicitReturns": true,
