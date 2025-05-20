@@ -5,6 +5,7 @@ import LocalesService from "./services/locales/locales.service"
 import { LocalesMiddleware } from "./middleware/manageLocales.middleware"
 import { QUERY_PAR_LANG } from "./constants/constants"
 import { isAuthorisedAgent } from "./utils/sessionUtils";
+import getGOVUKFrontendVersion from "./utils/getGOVUKFrontendVersion";
 
 export {
     SubDirs,
@@ -14,5 +15,6 @@ export {
     LocalesMiddleware,
     LocalesService,
     QUERY_PAR_LANG,
-    isAuthorisedAgent
+    isAuthorisedAgent,
+    getGOVUKFrontendVersion
 };
