@@ -76,8 +76,8 @@ describe("companies house top level template", () => {
             const endScript = document.body.lastElementChild;
             expect(endScript?.tagName).toBe("SCRIPT");
             expect(endScript?.innerHTML.trim()).toBe(`
-    import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.9.0/govuk-frontend-5.9.0.min.js'
-    initAll()
+      import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.9.0/govuk-frontend-5.9.0.min.js'
+      initAll()
             `.trim());
         });
 
@@ -116,5 +116,20 @@ describe("companies house top level template", () => {
                 );
             })
         })
+
+        describe("supports version 4.x JavaScript initialising", () => {
+            renderTemplate({
+                ...layoutDefaultParameters,
+                govukFrontendVersion: "4.10.0"
+            });
+            const endScript = document.body.lastElementChild;
+            const secondToLastScript = endScript?.previousElementSibling;
+
+            expect(secondToLastScript?.tagName).toBe("SCRIPT");
+            expect(secondToLastScript?.getAttribute("src")).toBe("https://example.cloudfront.net/javascripts/govuk-frontend/v4.10.0/govuk-frontend-4.10.0.min.js");
+
+            expect(endScript?.tagName).toBe("SCRIPT");
+            expect(endScript?.innerHTML.trim()).toBe("window.GOVUKFrontend.initAll()");
+        });
     });
 });

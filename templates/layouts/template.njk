@@ -20,8 +20,14 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script type="module">
-    import { initAll } from '{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js'
-    initAll()
-  </script>
+  {# Starting in GOV.UK Frontend version 5, JavaScript is only loaded in modern browsers using ES6 Module imports. #}
+  {% if govukFrontendVersion | first >= "5"  %}
+    <script type="module">
+      import { initAll } from '{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js'
+      initAll()
+    </script>
+  {% else %}
+    <script src="{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js"></script>
+    <script>window.GOVUKFrontend.initAll()</script>
+  {% endif %}
 {% endblock %}
