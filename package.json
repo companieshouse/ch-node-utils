@@ -48,7 +48,7 @@
     "typescript": "^5.4.2"
   },
   "peerDependencies": {
-    "govuk-frontend": "5.x"
+    "govuk-frontend": "^5.10.0"
   },
   "bugs": {
     "url": "https://github.com/companieshouse/ch-node-utils/issues"

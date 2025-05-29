@@ -1,12 +1,17 @@
 {# Extends the GOV.UK Design System page template https://design-system.service.gov.uk/styles/page-template #}
 {% extends "govuk/template.njk" %}
 
+{% set _cdnImageRootPath = cdnHost + "/images/govuk-frontend/v" + govukFrontendVersion %}
+{% if govukRebrand %}
+  {% set _cdnImageRootPath = _cdnImageRootPath + "/rebrand" %}
+{% endif %}
+
 {# Based on https://github.com/alphagov/govuk-frontend/blob/5a456e24612643accea8f6512a023f5f1104a5f9/packages/govuk-frontend/src/govuk/template.njk#L12C1-L19C19 #}
 {% block headIcons %}
-  <link rel="icon" sizes="48x48" href="{{ cdnHost }}/images/govuk-frontend/v{{ govukFrontendVersion }}/favicon.ico">
-  <link rel="icon" sizes="any" href="{{ cdnHost }}/images/govuk-frontend/v{{ govukFrontendVersion }}/favicon.svg" type="image/svg+xml">
-  <link rel="mask-icon" href="{{ cdnHost }}/images/govuk-frontend/v{{ govukFrontendVersion }}/govuk-icon-mask.svg" color="{{ themeColor | default("#0b0c0c") }}"> {#- Hardcoded value of $govuk-black #}
-  <link rel="apple-touch-icon" href="{{ cdnHost }}/images/govuk-frontend/v{{ govukFrontendVersion }}/govuk-icon-180.png">
+  <link rel="icon" sizes="48x48" href="{{ _cdnImageRootPath }}/favicon.ico">
+  <link rel="icon" sizes="any" href="{{ _cdnImageRootPath }}/favicon.svg" type="image/svg+xml">
+  <link rel="mask-icon" href="{{ _cdnImageRootPath }}/govuk-icon-mask.svg" color="{{ themeColor }}">
+  <link rel="apple-touch-icon" href="{{ _cdnImageRootPath }}/govuk-icon-180.png">
 {% endblock %}
 
 {% block head %}

@@ -11,16 +11,29 @@ nunjucks.configure(["templates", "node_modules/govuk-frontend/dist"], {
 const layoutDefaultParameters = {
 	cdnHost: "https://example.cloudfront.net",
 	govukFrontendVersion: "5.9.0",
+    govukRebrand: false
 };
 
-describe("companies house top level template", () => {
+function renderTemplate (layoutParameters = layoutDefaultParameters) {
     const receivedOutput = nunjucks.render(
         "layouts/template.njk",
-        layoutDefaultParameters
+        layoutParameters
     );
     document.documentElement.innerHTML = receivedOutput;
+}
+
+function cleanupRenderedTemplate () {
+    document.getElementsByTagName('html')[0].innerHTML = '';
+}
+
+describe("companies house top level template", () => {
+    afterEach(() => {
+        cleanupRenderedTemplate();
+    });
+
     describe("GOV.UK Frontend", () => {
         it("links to CDN icons", () => {
+            renderTemplate();
             const icon48by48 = document.head.querySelector(
                 `link[rel="icon"][sizes="48x48"]`
             );
@@ -51,6 +64,7 @@ describe("companies house top level template", () => {
         });
 
         it("links to CDN stylesheet", () => {
+            renderTemplate();
             const stylesheet = document.head.querySelector(`link[rel="stylesheet"]`);
             expect(stylesheet?.getAttribute("href")).toBe(
                 "https://example.cloudfront.net/stylesheets/govuk-frontend/v5.9.0/govuk-frontend-5.9.0.min.css"
@@ -58,6 +72,7 @@ describe("companies house top level template", () => {
         });
 
         it("imports CDN JavaScript and initialises components", () => {
+            renderTemplate();
             const endScript = document.body.lastElementChild;
             expect(endScript?.tagName).toBe("SCRIPT");
             expect(endScript?.innerHTML.trim()).toBe(`
@@ -65,5 +80,41 @@ describe("companies house top level template", () => {
     initAll()
             `.trim());
         });
+
+        describe("supports govukRebrand mode", () => {
+            it("links to CDN icons", () => {
+                renderTemplate({
+                    ...layoutDefaultParameters,
+                    govukRebrand: true
+                });
+                const icon48by48 = document.head.querySelector(
+                    `link[rel="icon"][sizes="48x48"]`
+                );
+                expect(icon48by48?.getAttribute("href")).toBe(
+                    "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/rebrand/favicon.ico"
+                );
+
+                const iconAnySize = document.head.querySelector(
+                    `link[rel="icon"][sizes="any"]`
+                );
+                expect(iconAnySize?.getAttribute("href")).toBe(
+                    "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/rebrand/favicon.svg"
+                );
+                expect(iconAnySize?.getAttribute("type")).toBe("image/svg+xml");
+
+                const maskIcon = document.head.querySelector(`link[rel="mask-icon"]`);
+                expect(maskIcon?.getAttribute("href")).toBe(
+                    "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/rebrand/govuk-icon-mask.svg"
+                );
+                expect(maskIcon?.getAttribute("color")).toBe("#1d70b8");
+
+                const appleTouchIcon = document.head.querySelector(
+                    `link[rel="apple-touch-icon"]`
+                );
+                expect(appleTouchIcon?.getAttribute("href")).toBe(
+                    "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/rebrand/govuk-icon-180.png"
+                );
+            })
+        })
     });
 });
