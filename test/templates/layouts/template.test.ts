@@ -95,6 +95,16 @@ describe("companies house top level template", () => {
             );
         });
 
+        it("links to Open Graph image", () => {
+            renderTemplate(govukFrontendVersion);
+            const opengraphImage = document.head.querySelector(
+                `meta[property="og:image"]`
+            );
+            expect(opengraphImage?.getAttribute("content")).toBe(
+                `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/govuk-opengraph-image.png`
+            );
+        });
+
         it("links to CDN stylesheet", () => {
             renderTemplate(govukFrontendVersion);
             const stylesheet = document.head.querySelector(`link[rel="stylesheet"]`);

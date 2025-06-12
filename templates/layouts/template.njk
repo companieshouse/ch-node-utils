@@ -6,6 +6,9 @@
   {% set _cdnImageRootPath = _cdnImageRootPath + "/rebrand" %}
 {% endif %}
 
+{# GOV.UK Frontend Page Template option for Open Graph https://design-system.service.gov.uk/styles/page-template/#options #}
+{% set opengraphImageUrl = _cdnImageRootPath + "/govuk-opengraph-image.png" %}
+
 {# Based on https://github.com/alphagov/govuk-frontend/blob/v5.10.2/packages/govuk-frontend/src/govuk/template.njk#L21-L24 #}
 {% block headIcons %}
   <link rel="icon" sizes="48x48" href="{{ _cdnImageRootPath }}/favicon.ico">
