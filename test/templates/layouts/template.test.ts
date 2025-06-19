@@ -4,41 +4,86 @@
 
 import nunjucks from "nunjucks";
 
-nunjucks.configure(["templates", "node_modules/govuk-frontend/dist"], {
-	noCache: true,
-});
+const nunjucksWithGOVUKFrontend5 = new nunjucks.Environment(
+	new nunjucks.FileSystemLoader([
+		"templates",
+		"node_modules/govuk-frontend-5-10-2/dist",
+	]),
+	{
+		noCache: true,
+	}
+);
+const nunjucksWithGOVUKFrontend4 = new nunjucks.Environment(
+	new nunjucks.FileSystemLoader([
+		"templates",
+		"node_modules/govuk-frontend-4-10-0",
+	]),
+	{
+		noCache: true,
+	}
+);
 
 const layoutDefaultParameters = {
 	cdnHost: "https://example.cloudfront.net",
-	govukFrontendVersion: "5.9.0",
+    govukRebrand: false
 };
 
-describe("companies house top level template", () => {
-    const receivedOutput = nunjucks.render(
+function renderTemplate (
+    govukFrontendVersion: string,
+    customlayoutParameters = {}
+) {
+    let nunjucksEnvironment = null;
+    if (govukFrontendVersion.startsWith("5")) {
+        nunjucksEnvironment = nunjucksWithGOVUKFrontend5
+    } else if (govukFrontendVersion.startsWith("4")) {
+        nunjucksEnvironment = nunjucksWithGOVUKFrontend4
+    }
+    if (nunjucksEnvironment === null) {
+        throw new Error(`No environment configured for testing version %{govukFrontendVersion}`);
+    }
+    const layoutParameters = {
+        ...layoutDefaultParameters,
+        govukFrontendVersion,
+        ...customlayoutParameters
+    }
+    const receivedOutput = nunjucksEnvironment.render(
         "layouts/template.njk",
-        layoutDefaultParameters
+        layoutParameters
     );
     document.documentElement.innerHTML = receivedOutput;
-    describe("GOV.UK Frontend", () => {
+}
+
+function cleanupRenderedTemplate () {
+    document.getElementsByTagName('html')[0].innerHTML = '';
+}
+
+describe("companies house top level template", () => {
+    afterEach(() => {
+        cleanupRenderedTemplate();
+    });
+    describe.each(
+        ["5.10.2", "4.10.0"]
+    )("GOV.UK Frontend version %s", (govukFrontendVersion) => {
         it("links to CDN icons", () => {
+            renderTemplate(govukFrontendVersion);
             const icon48by48 = document.head.querySelector(
                 `link[rel="icon"][sizes="48x48"]`
             );
             expect(icon48by48?.getAttribute("href")).toBe(
-                "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/favicon.ico"
+                `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/favicon.ico`
             );
 
             const iconAnySize = document.head.querySelector(
                 `link[rel="icon"][sizes="any"]`
             );
             expect(iconAnySize?.getAttribute("href")).toBe(
-                "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/favicon.svg"
+                `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/favicon.svg`
             );
             expect(iconAnySize?.getAttribute("type")).toBe("image/svg+xml");
 
             const maskIcon = document.head.querySelector(`link[rel="mask-icon"]`);
             expect(maskIcon?.getAttribute("href")).toBe(
-                "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/govuk-icon-mask.svg"
+                `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/govuk-icon-mask.svg`
             );
             expect(maskIcon?.getAttribute("color")).toBe("#0b0c0c");
 
@@ -46,24 +91,86 @@ describe("companies house top level template", () => {
                 `link[rel="apple-touch-icon"]`
             );
             expect(appleTouchIcon?.getAttribute("href")).toBe(
-                "https://example.cloudfront.net/images/govuk-frontend/v5.9.0/govuk-icon-180.png"
+                `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/govuk-icon-180.png`
+            );
+        });
+
+        it("links to Open Graph image", () => {
+            renderTemplate(govukFrontendVersion);
+            const opengraphImage = document.head.querySelector(
+                `meta[property="og:image"]`
+            );
+            expect(opengraphImage?.getAttribute("content")).toBe(
+                `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/govuk-opengraph-image.png`
             );
         });
 
         it("links to CDN stylesheet", () => {
+            renderTemplate(govukFrontendVersion);
             const stylesheet = document.head.querySelector(`link[rel="stylesheet"]`);
             expect(stylesheet?.getAttribute("href")).toBe(
-                "https://example.cloudfront.net/stylesheets/govuk-frontend/v5.9.0/govuk-frontend-5.9.0.min.css"
+                `https://example.cloudfront.net/stylesheets/govuk-frontend/v${govukFrontendVersion}/govuk-frontend-${govukFrontendVersion}.min.css`
             );
         });
 
+        describe("supports govukRebrand mode", () => {
+            it("links to CDN icons", () => {
+                renderTemplate(govukFrontendVersion, {
+                    govukRebrand: true
+                });
+                const icon48by48 = document.head.querySelector(
+                    `link[rel="icon"][sizes="48x48"]`
+                );
+                expect(icon48by48?.getAttribute("href")).toBe(
+                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/favicon.ico`
+                );
+
+                const iconAnySize = document.head.querySelector(
+                    `link[rel="icon"][sizes="any"]`
+                );
+                expect(iconAnySize?.getAttribute("href")).toBe(
+                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/favicon.svg`
+                );
+                expect(iconAnySize?.getAttribute("type")).toBe("image/svg+xml");
+
+                const maskIcon = document.head.querySelector(`link[rel="mask-icon"]`);
+                expect(maskIcon?.getAttribute("href")).toBe(
+                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/govuk-icon-mask.svg`
+                );
+                expect(maskIcon?.getAttribute("color")).toBe("#1d70b8");
+
+                const appleTouchIcon = document.head.querySelector(
+                    `link[rel="apple-touch-icon"]`
+                );
+                expect(appleTouchIcon?.getAttribute("href")).toBe(
+                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/govuk-icon-180.png`
+                );
+            })
+        })
+    });
+    describe("GOV.UK Frontend version 5.10.2", () => {
         it("imports CDN JavaScript and initialises components", () => {
+            renderTemplate("5.10.2");
             const endScript = document.body.lastElementChild;
             expect(endScript?.tagName).toBe("SCRIPT");
             expect(endScript?.innerHTML.trim()).toBe(`
-    import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.9.0/govuk-frontend-5.9.0.min.js'
-    initAll()
+        import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.10.2/govuk-frontend-5.10.2.min.js'
+      initAll()
             `.trim());
+        });
+    });
+    describe("GOV.UK Frontend version 4.10.0", () => {
+        it("JavaScript and initialises components", () => {
+            renderTemplate("4.10.0");
+
+            const endScript = document.body.lastElementChild;
+            const secondToLastScript = endScript?.previousElementSibling;
+        
+            expect(secondToLastScript?.tagName).toBe("SCRIPT");
+            expect(secondToLastScript?.getAttribute("src")).toBe("https://example.cloudfront.net/javascripts/govuk-frontend/v4.10.0/govuk-frontend-4.10.0.min.js");
+        
+            expect(endScript?.tagName).toBe("SCRIPT");
+            expect(endScript?.innerHTML.trim()).toBe("window.GOVUKFrontend.initAll()");
         });
     });
 });
