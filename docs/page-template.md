@@ -30,6 +30,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 njk.addGlobal("cdnHost", "https://example.cloudfront.net");
 njk.addGlobal("govukFrontendVersion", getGOVUKFrontendVersion());
+njk.addGlobal("govukRebrand", true);
 ```
 4. Extend the template in your top level layout and [set blocks](#setting-blocks) to display content.
 
@@ -47,6 +48,7 @@ njk.addGlobal("govukFrontendVersion", getGOVUKFrontendVersion());
 | - | - | - |
 | cdnHost | Variable | root domain for the [CDN host](https://github.com/companieshouse/cdn.ch.gov.uk) |
 | govukFrontendVersion | Variable | version of GOV.UK Frontend to use, recommend to set this with the [`getGOVUKFrontendVersion` helper](#getGOVUKFrontendVersion) |
+| govukRebrand | Varaible | Enables the new GOV.UK Rebranding, this variable is from the [GOV.UK Frontend Page Template](https://design-system.service.gov.uk/styles/page-template/#options) |
 
 ## Setting blocks
 
