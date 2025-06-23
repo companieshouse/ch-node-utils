@@ -48,7 +48,7 @@ njk.addGlobal("govukRebrand", true);
 | - | - | - |
 | cdnHost | Variable | root domain for the [CDN host](https://github.com/companieshouse/cdn.ch.gov.uk) |
 | govukFrontendVersion | Variable | version of GOV.UK Frontend to use, recommend to set this with the [`getGOVUKFrontendVersion` helper](#getGOVUKFrontendVersion) |
-| govukRebrand | Varaible | Enables the new GOV.UK Rebranding, this variable is from the [GOV.UK Frontend Page Template](https://design-system.service.gov.uk/styles/page-template/#options) |
+| govukRebrand | Variable | Enables the new GOV.UK Rebranding, this variable is from the [GOV.UK Frontend Page Template](https://design-system.service.gov.uk/styles/page-template/#options) |
 
 ## Setting blocks
 
