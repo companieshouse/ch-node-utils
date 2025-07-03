@@ -12,14 +12,14 @@ export function LocalesMiddleware (): RequestHandler {
         let lang: string | undefined =
             (<string>req.query[QUERY_PAR_LANG]) ||
             req.body?.lang ||
-            req.session?.getExtraData<string>(QUERY_PAR_LANG);
+            req.session?.getLanguage();
             log(`LocalesMiddleware ....(init with received values: lang=${lang}) - body:${req.body?.lang ?? 'N/A'})`)
         if (lang === undefined || !LanguageNames.isSupportedLocale(LocalesService.getInstance().localesFolder, lang)) {
             lang = "en"
         }
         log(`LocalesMiddleware ....(setting lang=${lang})`)
         if (req.session) {
-            req.session.setExtraData(QUERY_PAR_LANG, lang) // when there is a session store it there
+            req.session.setLanguage(lang) // when there is a session store it there
         }
         req.lang = lang // store it also as metadata in the request
 
