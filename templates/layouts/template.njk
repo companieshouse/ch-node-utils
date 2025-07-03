@@ -6,6 +6,11 @@
   {% set _cdnImageRootPath = _cdnImageRootPath + "/rebrand" %}
 {% endif %}
 
+{% set _cdnManifestRootPath = cdnHost + "/static/govuk-frontend/v" + govukFrontendVersion %}
+{% if govukRebrand %}
+  {% set _cdnManifestRootPath = _cdnManifestRootPath + "/rebrand" %}
+{% endif %}
+
 {# GOV.UK Frontend Page Template option for Open Graph https://design-system.service.gov.uk/styles/page-template/#options #}
 {% set opengraphImageUrl = _cdnImageRootPath + "/govuk-opengraph-image.png" %}
 
@@ -15,6 +20,7 @@
   <link rel="icon" sizes="any" href="{{ _cdnImageRootPath }}/favicon.svg" type="image/svg+xml">
   <link rel="mask-icon" href="{{ _cdnImageRootPath }}/govuk-icon-mask.svg" color="{{ themeColor }}">
   <link rel="apple-touch-icon" href="{{ _cdnImageRootPath }}/govuk-icon-180.png">
+  <link rel="manifest" href="{{ _cdnManifestRootPath }}/manifest.json">
 {% endblock %}
 
 {% block head %}
