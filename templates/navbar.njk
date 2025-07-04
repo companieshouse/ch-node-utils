@@ -46,7 +46,7 @@ It receives:
                 </li>
                 {% for item in menuItems %}
                     <li>
-                        <a class="govuk-link" id="{{ item.id }}" href="{{ item.href }}">{{ item.displayText }}</a>
+                        <a class="govuk-link" id="{{ item.id }}" data-event-id="{{ item.id }}-nav-link" href="{{ item.href }}">{{ item.displayText }}</a>
                     </li>
                 {% endfor %}
             </ul>
