@@ -113,6 +113,16 @@ describe("companies house top level template", () => {
             );
         });
 
+        it("links to CDN manifest.json", () => {
+            renderTemplate(govukFrontendVersion);
+            const manifest = document.head.querySelector(
+                `link[rel="manifest"]`
+            );
+            expect(manifest?.getAttribute("href")).toBe(
+                `https://example.cloudfront.net/static/govuk-frontend/v${govukFrontendVersion}/manifest.json`
+            );
+        });
+
         describe("supports govukRebrand mode", () => {
             it("links to CDN icons", () => {
                 renderTemplate(govukFrontendVersion, {
@@ -145,7 +155,19 @@ describe("companies house top level template", () => {
                 expect(appleTouchIcon?.getAttribute("href")).toBe(
                     `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/govuk-icon-180.png`
                 );
-            })
+            });
+
+            it("links to rebrand CDN manifest.json", () => {
+                renderTemplate(govukFrontendVersion, {
+                    govukRebrand: true
+                });
+                const manifest = document.head.querySelector(
+                    `link[rel="manifest"]`
+                );
+                expect(manifest?.getAttribute("href")).toBe(
+                    `https://example.cloudfront.net/static/govuk-frontend/v${govukFrontendVersion}/rebrand/manifest.json`
+                );
+            });
         })
     });
     describe("GOV.UK Frontend version 5.10.2", () => {
