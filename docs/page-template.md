@@ -67,7 +67,7 @@ If you want to extend the `head`, `headIcons` or `bodyEnd` blocks you must call 
 ## Helpers
 ### getGOVUKFrontendVersion
 
-Returns the version of GOV.UK Frontend installed by the application, if it is not pinned it'll throw an error to ensure consitencey between the package.json and CDN versions.
+Returns the version of GOV.UK Frontend installed by the application, if it is not pinned it'll throw an error to ensure consistencey between the package.json and CDN versions.
 
 ```javascript
 import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
