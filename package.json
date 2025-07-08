@@ -50,7 +50,7 @@
     "typescript": "^5.4.2"
   },
   "peerDependencies": {
-    "govuk-frontend": "^4.10.0, ^5.10.0"
+    "govuk-frontend": "^4.10.0 || ^5.10.0"
   },
   "bugs": {
     "url": "https://github.com/companieshouse/ch-node-utils/issues"
