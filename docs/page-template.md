@@ -34,11 +34,57 @@ njk.addGlobal("govukRebrand", true);
 ```
 4. Extend the template in your top level layout and [set blocks](#setting-blocks) to display content.
 
-```handlebars
+```nunjucks
+{# Extends the Companies House Page Template: https://github.com/companieshouse/ch-node-utils/blob/main/docs/page-template.md #}
 {% extends "ch-node-utils/templates/layouts/template.njk" %}
 
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+
+{% block header %}
+  {{ super() }}
+  {{ govukServiceNavigation({
+    serviceName: "Find and update company information",
+    serviceUrl: "#"
+  }) }}
+{% endblock %}
+
 {% block content %}
-   <h1 class="govuk-heading-l">Hello, world.</h1>
+  <h1 class="govuk-heading-l">Page template</h1>
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "#",
+          text: "Help"
+        },
+        {
+          href: "#",
+          text: "Cookies"
+        },
+        {
+          href: "#",
+          text: "Contact"
+        },
+        {
+          href: "#",
+          text: "Terms and conditions"
+        },
+        {
+          href: "#",
+          text: "Rhestr o Wasanaethau Cymraeg",
+          attributes: {
+            lang: "cy",
+            hreflang: "cy"
+          }
+        }
+      ],
+      html: 'Built by <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">Companies House</a>'
+    }
+  }) }}
 {% endblock %}
 ```
 
