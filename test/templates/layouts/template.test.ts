@@ -123,6 +123,16 @@ describe("companies house top level template", () => {
             );
         });
 
+        it("supports adding nonce values to inline scripts", () => {
+            // Example nonce from: https://content-security-policy.com/examples/allow-inline-script/
+            renderTemplate(govukFrontendVersion, {
+                nonce: "rAnd0m"
+            });
+             const endScript = document.body.lastElementChild;
+            expect(endScript?.tagName).toBe("SCRIPT");
+            expect(endScript?.innerHTML).not.toBe("");
+            expect(endScript?.getAttribute("nonce")).toBe("rAnd0m");
+        });
         describe("supports govukRebrand mode", () => {
             it("links to CDN icons", () => {
                 renderTemplate(govukFrontendVersion, {

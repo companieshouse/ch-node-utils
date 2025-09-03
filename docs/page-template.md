@@ -95,6 +95,7 @@ njk.addGlobal("govukRebrand", true);
 | cdnHost | Variable | root domain for the [CDN host](https://github.com/companieshouse/cdn.ch.gov.uk) |
 | govukFrontendVersion | Variable | version of GOV.UK Frontend to use, recommend to set this with the [`getGOVUKFrontendVersion` helper](#getGOVUKFrontendVersion) |
 | govukRebrand | Variable | Enables the new GOV.UK Rebranding, this variable is from the [GOV.UK Frontend Page Template](https://design-system.service.gov.uk/styles/page-template/#options) |
+| nonce | Variable | Allows setting a [`nonce` value for use with a Content Security Policy (CSP)](https://content-security-policy.com/examples/allow-inline-script/) |
 
 ## Setting blocks
 
