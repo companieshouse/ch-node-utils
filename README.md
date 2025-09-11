@@ -3,6 +3,10 @@
 set of node utils which can be used across repos/projects.
 Available as a normal npm dependency([here on npmjs](https://www.npmjs.com/package/@companieshouse/ch-node-utils))
 
+## Compatible Node.js Versions
+
+This package has been upgraded to be compatible with Node v24. Presently, it's backward compatible with v20 and v18 but compatibility is primarily required for v24 as all CH Node services are in the process of being upgraded to v24.
+
 ## Areas for the different utilities stored in this repo:
 
 ### Page template layout
@@ -142,7 +146,3 @@ The navbar also requires the use of styles provided in the [ch.gov.uk.css](https
 It also requires the [navbar.js](https://github.com/companieshouse/cdn.ch.gov.uk/blob/master/app/assets/javascripts/lib/navbar.js) script to be added to the footer to make the navbar work in mobile mode (make sure it's the latest version).
 
 `<script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>`
-
-##### Node.js Version Requirement
-
-This project requires **Node.js version 24 or higher**. Please ensure you are using Node 24+ before installing or running this package.
