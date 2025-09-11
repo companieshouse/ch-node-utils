@@ -142,3 +142,7 @@ The navbar also requires the use of styles provided in the [ch.gov.uk.css](https
 It also requires the [navbar.js](https://github.com/companieshouse/cdn.ch.gov.uk/blob/master/app/assets/javascripts/lib/navbar.js) script to be added to the footer to make the navbar work in mobile mode (make sure it's the latest version).
 
 `<script src="{{ cdnHost }}/javascripts/lib/navbar.js"></script>`
+
+##### Node.js Version Requirement
+
+This project requires **Node.js version 24 or higher**. Please ensure you are using Node 24+ before installing or running this package.
