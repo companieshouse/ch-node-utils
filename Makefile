@@ -18,8 +18,8 @@ build:
 lint:
 	#npm run lint
 
-.PHONY: security-check
-security-check:
+.PHONY: dependency-check
+dependency-check:
 	npm audit
 
 .PHONY: test-unit
