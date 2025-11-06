@@ -31,7 +31,7 @@ test: test-unit
 
 .PHONY: sonar
 sonar:
-	npm run sonarqube
+	npm run analyse-code
 
 .PHONY: package
 package: build
