@@ -11,12 +11,12 @@ clean:
 .PHONY: build
 build:
 	GIT_SSH_COMMAND="ssh" npm i
-	#npm run lint
+	npm run lint
 	npm run build
 
 .PHONY: lint
 lint:
-	#npm run lint
+	npm run lint
 
 .PHONY: dependency-check
 dependency-check:
@@ -31,6 +31,7 @@ test: test-unit
 
 .PHONY: sonar
 sonar:
+    npm run coverage:report
 	npm run sonarqube
 
 .PHONY: package
