@@ -18,8 +18,8 @@ build:
 lint:
 	#npm run lint
 
-.PHONY: security-check
-security-check:
+.PHONY: dependency-check
+dependency-check:
 	npm audit
 
 .PHONY: test-unit
@@ -31,7 +31,8 @@ test: test-unit
 
 .PHONY: sonar
 sonar:
-#	npm run analyse-code
+    npm run coverage:report
+	npm run sonarqube
 
 .PHONY: package
 package: build
