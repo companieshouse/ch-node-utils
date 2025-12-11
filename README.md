@@ -141,7 +141,7 @@ The navbar uses translations from `@companieshouse/ch-node-utils` (this) package
 
 The navbar also requires the use of styles provided in the [ch.gov.uk.css](https://github.com/companieshouse/cdn.ch.gov.uk/blob/master/app/assets/stylesheets/ch.gov.uk.css) stylesheet (you can either add the provided link to the head section or include specific styles in your own stylesheet)
 
-`<link href="{{ cdnHost }}/stylesheets/ch.gov.uk.css" rel="stylesheet"/>`
+`<link href="{{ cdnHost }}/stylesheets/ch.gov.uk.css" rel="stylesheet" crossorigin="anonymous"/>`
 
 It also requires the [navbar.js](https://github.com/companieshouse/cdn.ch.gov.uk/blob/master/app/assets/javascripts/lib/navbar.js) script to be added to the footer to make the navbar work in mobile mode (make sure it's the latest version).
 

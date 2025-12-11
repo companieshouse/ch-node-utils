@@ -108,7 +108,7 @@ If you want to extend the `head`, `headIcons` or `bodyEnd` blocks you must call 
 ```handlebars
 {% block head %}
    {{ super() }}
-   <link rel="stylesheets" href="https://example.cloudfront.net/stylesheets/application.css">
+   <link rel="stylesheets" href="https://example.cloudfront.net/stylesheets/application.css" crossorigin="anonymous">
 {% endblock %}
 ```
 ## Helpers
