@@ -22,7 +22,7 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script type="module"{% if nonce %} nonce="{{ nonce }}"{% endif %}>
+  <script type="module"{% if cspNonce %} nonce="{{ cspNonce }}"{% endif %}>
     import { initAll } from '{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js'
     initAll()
   </script>
