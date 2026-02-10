@@ -4,19 +4,10 @@
 
 import nunjucks from "nunjucks";
 
-const nunjucksWithGOVUKFrontend5 = new nunjucks.Environment(
+const nunjucksWithGOVUKFrontend6 = new nunjucks.Environment(
 	new nunjucks.FileSystemLoader([
 		"templates",
-		"node_modules/govuk-frontend-5-14-0/dist",
-	]),
-	{
-		noCache: true,
-	}
-);
-const nunjucksWithGOVUKFrontend4 = new nunjucks.Environment(
-	new nunjucks.FileSystemLoader([
-		"templates",
-		"node_modules/govuk-frontend-4-10-1",
+		"node_modules/govuk-frontend-6-0-0/dist",
 	]),
 	{
 		noCache: true,
@@ -24,8 +15,7 @@ const nunjucksWithGOVUKFrontend4 = new nunjucks.Environment(
 );
 
 const layoutDefaultParameters = {
-	cdnHost: "https://example.cloudfront.net",
-    govukRebrand: false
+	cdnHost: "https://example.cloudfront.net"
 };
 
 function renderTemplate (
@@ -33,11 +23,7 @@ function renderTemplate (
     customlayoutParameters = {}
 ) {
     let nunjucksEnvironment = null;
-    if (govukFrontendVersion.startsWith("5")) {
-        nunjucksEnvironment = nunjucksWithGOVUKFrontend5
-    } else if (govukFrontendVersion.startsWith("4")) {
-        nunjucksEnvironment = nunjucksWithGOVUKFrontend4
-    }
+    nunjucksEnvironment = nunjucksWithGOVUKFrontend6
     if (nunjucksEnvironment === null) {
         throw new Error(`No environment configured for testing version %{govukFrontendVersion}`);
     }
@@ -62,7 +48,7 @@ describe("companies house top level template", () => {
         cleanupRenderedTemplate();
     });
     describe.each(
-        ["5.14.0", "4.10.1"]
+        ["6.0.0"]
     )("GOV.UK Frontend version %s", (govukFrontendVersion) => {
         it("links to CDN icons", () => {
             renderTemplate(govukFrontendVersion);
@@ -85,7 +71,7 @@ describe("companies house top level template", () => {
             expect(maskIcon?.getAttribute("href")).toBe(
                 `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/govuk-icon-mask.svg`
             );
-            expect(maskIcon?.getAttribute("color")).toBe("#0b0c0c");
+            expect(maskIcon?.getAttribute("color")).toBe("#1d70b8");
 
             const appleTouchIcon = document.head.querySelector(
                 `link[rel="apple-touch-icon"]`
@@ -133,76 +119,15 @@ describe("companies house top level template", () => {
             expect(endScript?.innerHTML).not.toBe("");
             expect(endScript?.getAttribute("nonce")).toBe("rAnd0m");
         });
-        describe("supports govukRebrand mode", () => {
-            it("links to CDN icons", () => {
-                renderTemplate(govukFrontendVersion, {
-                    govukRebrand: true
-                });
-                const icon48by48 = document.head.querySelector(
-                    `link[rel="icon"][sizes="48x48"]`
-                );
-                expect(icon48by48?.getAttribute("href")).toBe(
-                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/favicon.ico`
-                );
 
-                const iconAnySize = document.head.querySelector(
-                    `link[rel="icon"][sizes="any"]`
-                );
-                expect(iconAnySize?.getAttribute("href")).toBe(
-                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/favicon.svg`
-                );
-                expect(iconAnySize?.getAttribute("type")).toBe("image/svg+xml");
-
-                const maskIcon = document.head.querySelector(`link[rel="mask-icon"]`);
-                expect(maskIcon?.getAttribute("href")).toBe(
-                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/govuk-icon-mask.svg`
-                );
-                expect(maskIcon?.getAttribute("color")).toBe("#1d70b8");
-
-                const appleTouchIcon = document.head.querySelector(
-                    `link[rel="apple-touch-icon"]`
-                );
-                expect(appleTouchIcon?.getAttribute("href")).toBe(
-                    `https://example.cloudfront.net/images/govuk-frontend/v${govukFrontendVersion}/rebrand/govuk-icon-180.png`
-                );
-            });
-
-            it("links to rebrand CDN manifest.json", () => {
-                renderTemplate(govukFrontendVersion, {
-                    govukRebrand: true
-                });
-                const manifest = document.head.querySelector(
-                    `link[rel="manifest"]`
-                );
-                expect(manifest?.getAttribute("href")).toBe(
-                    `https://example.cloudfront.net/static/govuk-frontend/v${govukFrontendVersion}/rebrand/manifest.json`
-                );
-            });
-        })
-    });
-    describe("GOV.UK Frontend version 5.14.0", () => {
         it("imports CDN JavaScript and initialises components", () => {
-            renderTemplate("5.14.0");
+            renderTemplate(govukFrontendVersion);
             const endScript = document.body.lastElementChild;
             expect(endScript?.tagName).toBe("SCRIPT");
             expect(endScript?.innerHTML.trim()).toBe(`
-        import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.14.0/govuk-frontend-5.14.0.min.js'
-      initAll()
+        import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v${govukFrontendVersion}/govuk-frontend-${govukFrontendVersion}.min.js'
+    initAll()
             `.trim());
-        });
-    });
-    describe("GOV.UK Frontend version 4.10.1", () => {
-        it("JavaScript and initialises components", () => {
-            renderTemplate("4.10.1");
-
-            const endScript = document.body.lastElementChild;
-            const secondToLastScript = endScript?.previousElementSibling;
-        
-            expect(secondToLastScript?.tagName).toBe("SCRIPT");
-            expect(secondToLastScript?.getAttribute("src")).toBe("https://example.cloudfront.net/javascripts/govuk-frontend/v4.10.1/govuk-frontend-4.10.1.min.js");
-        
-            expect(endScript?.tagName).toBe("SCRIPT");
-            expect(endScript?.innerHTML.trim()).toBe("window.GOVUKFrontend.initAll()");
         });
     });
 });

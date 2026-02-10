@@ -2,14 +2,7 @@
 {% extends "govuk/template.njk" %}
 
 {% set _cdnImageRootPath = cdnHost + "/images/govuk-frontend/v" + govukFrontendVersion %}
-{% if govukRebrand %}
-  {% set _cdnImageRootPath = _cdnImageRootPath + "/rebrand" %}
-{% endif %}
-
 {% set _cdnManifestRootPath = cdnHost + "/static/govuk-frontend/v" + govukFrontendVersion %}
-{% if govukRebrand %}
-  {% set _cdnManifestRootPath = _cdnManifestRootPath + "/rebrand" %}
-{% endif %}
 
 {# GOV.UK Frontend Page Template option for Open Graph https://design-system.service.gov.uk/styles/page-template/#options #}
 {% set opengraphImageUrl = _cdnImageRootPath + "/govuk-opengraph-image.png" %}
@@ -29,14 +22,8 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  {# Starting in GOV.UK Frontend version 5, JavaScript is only loaded in modern browsers using ES6 Module imports. #}
-  {% if govukFrontendVersion | first >= "5"  %}
-    <script type="module"{% if nonce %} nonce="{{ nonce }}"{% endif %}>
-      import { initAll } from '{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js'
-      initAll()
-    </script>
-  {% else %}
-    <script src="{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js"></script>
-    <script{% if nonce %} nonce="{{ nonce }}"{% endif %}>window.GOVUKFrontend.initAll()</script>
-  {% endif %}
+  <script type="module"{% if nonce %} nonce="{{ nonce }}"{% endif %}>
+    import { initAll } from '{{ cdnHost }}/javascripts/govuk-frontend/v{{ govukFrontendVersion }}/govuk-frontend-{{ govukFrontendVersion }}.min.js'
+    initAll()
+  </script>
 {% endblock %}

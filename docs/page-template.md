@@ -30,7 +30,6 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 njk.addGlobal("cdnHost", "https://example.cloudfront.net");
 njk.addGlobal("govukFrontendVersion", getGOVUKFrontendVersion());
-njk.addGlobal("govukRebrand", true);
 ```
 4. Extend the template in your top level layout and [set blocks](#setting-blocks) to display content.
 
@@ -41,10 +40,9 @@ njk.addGlobal("govukRebrand", true);
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 
-{% block header %}
-  {{ super() }}
+{% block govukServiceNavigation %}
   {{ govukServiceNavigation({
-    serviceName: "Find and update company information",
+    serviceName: "Your service name here",
     serviceUrl: "#"
   }) }}
 {% endblock %}
@@ -53,7 +51,7 @@ njk.addGlobal("govukRebrand", true);
   <h1 class="govuk-heading-l">Page template</h1>
 {% endblock %}
 
-{% block footer %}
+{% block govukFooter %}
   {{ govukFooter({
     meta: {
       items: [
@@ -82,7 +80,8 @@ njk.addGlobal("govukRebrand", true);
           }
         }
       ],
-      html: 'Built by <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">Companies House</a>'
+      html: 'Built by <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">Companies House</a>',
+      contentLicence: null
     }
   }) }}
 {% endblock %}
@@ -118,5 +117,5 @@ Returns the version of GOV.UK Frontend installed by the application, if it is no
 
 ```javascript
 import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
-console.log(getGOVUKFrontendVersion()); // e.g. returns 5.9.0
+console.log(getGOVUKFrontendVersion()); // e.g. returns 6.0.0
 ```
