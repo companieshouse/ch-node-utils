@@ -7,7 +7,7 @@ import nunjucks from "nunjucks";
 const nunjucksWithGOVUKFrontend5 = new nunjucks.Environment(
 	new nunjucks.FileSystemLoader([
 		"templates",
-		"node_modules/govuk-frontend-5-10-2/dist",
+		"node_modules/govuk-frontend-5-14-0/dist",
 	]),
 	{
 		noCache: true,
@@ -16,7 +16,7 @@ const nunjucksWithGOVUKFrontend5 = new nunjucks.Environment(
 const nunjucksWithGOVUKFrontend4 = new nunjucks.Environment(
 	new nunjucks.FileSystemLoader([
 		"templates",
-		"node_modules/govuk-frontend-4-10-0",
+		"node_modules/govuk-frontend-4-10-1",
 	]),
 	{
 		noCache: true,
@@ -62,7 +62,7 @@ describe("companies house top level template", () => {
         cleanupRenderedTemplate();
     });
     describe.each(
-        ["5.10.2", "4.10.0"]
+        ["5.14.0", "4.10.1"]
     )("GOV.UK Frontend version %s", (govukFrontendVersion) => {
         it("links to CDN icons", () => {
             renderTemplate(govukFrontendVersion);
@@ -180,26 +180,26 @@ describe("companies house top level template", () => {
             });
         })
     });
-    describe("GOV.UK Frontend version 5.10.2", () => {
+    describe("GOV.UK Frontend version 5.14.0", () => {
         it("imports CDN JavaScript and initialises components", () => {
-            renderTemplate("5.10.2");
+            renderTemplate("5.14.0");
             const endScript = document.body.lastElementChild;
             expect(endScript?.tagName).toBe("SCRIPT");
             expect(endScript?.innerHTML.trim()).toBe(`
-        import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.10.2/govuk-frontend-5.10.2.min.js'
+        import { initAll } from 'https://example.cloudfront.net/javascripts/govuk-frontend/v5.14.0/govuk-frontend-5.14.0.min.js'
       initAll()
             `.trim());
         });
     });
-    describe("GOV.UK Frontend version 4.10.0", () => {
+    describe("GOV.UK Frontend version 4.10.1", () => {
         it("JavaScript and initialises components", () => {
-            renderTemplate("4.10.0");
+            renderTemplate("4.10.1");
 
             const endScript = document.body.lastElementChild;
             const secondToLastScript = endScript?.previousElementSibling;
         
             expect(secondToLastScript?.tagName).toBe("SCRIPT");
-            expect(secondToLastScript?.getAttribute("src")).toBe("https://example.cloudfront.net/javascripts/govuk-frontend/v4.10.0/govuk-frontend-4.10.0.min.js");
+            expect(secondToLastScript?.getAttribute("src")).toBe("https://example.cloudfront.net/javascripts/govuk-frontend/v4.10.1/govuk-frontend-4.10.1.min.js");
         
             expect(endScript?.tagName).toBe("SCRIPT");
             expect(endScript?.innerHTML.trim()).toBe("window.GOVUKFrontend.initAll()");
