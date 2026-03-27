@@ -1,7 +1,6 @@
+
 module.exports = {
-  roots: [
-    "<rootDir>"
-  ],
+  roots: ["<rootDir>"],
   testPathIgnorePatterns: [
     "/node_modules/",
     "/dist/"
@@ -13,14 +12,12 @@ module.exports = {
     "/src/bin/",
     "/src/model/"
   ],
-  preset: "ts-jest",
   testEnvironment: "node",
   testTimeout: 25000,
   verbose: true,
   testMatch: ["**/test/**/*.test.[jt]s"],
-  globals: {},
   transform: {
-    "^.+\\.ts$": ["ts-jest", { diagnostics: false }]
+    "^.+\\.ts$": ["@swc/jest"]
   },
   globalSetup: "./test/setup.ts",
 };
