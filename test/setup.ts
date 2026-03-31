@@ -1,7 +1,7 @@
 export default () => {
-  process.env.NODE_ENV = "development";
-  process.env.CDN_HOST = "CDN_HOST";
+    process.env.NODE_ENV = "development";
+    process.env.CDN_HOST = "CDN_HOST";
 
-  //  feature flags
-  process.env.UNESCAPE = "false";
+    //  feature flags
+    process.env.UNESCAPE = "false";
 };
