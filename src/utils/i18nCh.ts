@@ -13,40 +13,36 @@ export default class i18nCh {
     private nameSpaces: string[] = [];
 
     private constructor(localesFolder = "", nameSpaces: string[] = [], lang = "en") {
-        try {
-            if (!localesFolder) {
+        if (!localesFolder) {
             // no point to translate these errors as if they should ever happen they are input for devs, not customers
-                throw new Error("i18nCh initialization error: path to locales must be provided");
-            }
-            this.localesFolder = localesFolder;
-            this.nodeModulesFolder = NODE_MODULES_LOCALES_PATH;
-
-            if (nameSpaces.length === 0) {
-                nameSpaces = this.loadAllNamespaces();
-            }
-            this.nameSpaces = nameSpaces;
-
-            this.i18nInst = i18next;
-            this.i18nInst
-                .use(Backend)
-                .init({
-                    initImmediate: false, // false = will load the resources synchronously
-                    ns: nameSpaces,
-                    partialBundledLanguages: true,
-                    lng: lang,
-                    fallbackLng: "en",
-                    preload: this.getLanguageFolders(),
-                    backend: {
-                        loadPath: (lng: string, ns: string) => {
-                            const projectPath = path.join(this.localesFolder, `${lng}/${ns}.json`);
-                            const nodePath = path.join(this.nodeModulesFolder, `${lng}/${ns}.json`);
-                            return fs.existsSync(projectPath) ? projectPath : nodePath;
-                        }
-                    }
-                });
-        } catch (err) {
-            throw err; // propagate
+            throw new Error("i18nCh initialization error: path to locales must be provided");
         }
+        this.localesFolder = localesFolder;
+        this.nodeModulesFolder = NODE_MODULES_LOCALES_PATH;
+
+        if (nameSpaces.length === 0) {
+            nameSpaces = this.loadAllNamespaces();
+        }
+        this.nameSpaces = nameSpaces;
+
+        this.i18nInst = i18next;
+        this.i18nInst
+            .use(Backend)
+            .init({
+                initImmediate: false, // false = will load the resources synchronously
+                ns: nameSpaces,
+                partialBundledLanguages: true,
+                lng: lang,
+                fallbackLng: "en",
+                preload: this.getLanguageFolders(),
+                backend: {
+                    loadPath: (lng: string, ns: string) => {
+                        const projectPath = path.join(this.localesFolder, `${lng}/${ns}.json`);
+                        const nodePath = path.join(this.nodeModulesFolder, `${lng}/${ns}.json`);
+                        return fs.existsSync(projectPath) ? projectPath : nodePath;
+                    }
+                }
+            });
     }
     // _______________________________________________________________________________________________
     // Singleton retriever
@@ -138,26 +134,22 @@ export default class i18nCh {
     public resolveNamespacesKeys (lang: string, vars: any = {}, unescape: boolean = false): Record<string, any> {
         let data: Record<string, any> = {};
 
-        try {
-            if (this.i18nInst && this.nameSpaces ) {
-                this.changeLanguage (lang);
-                const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
+        if (this.i18nInst && this.nameSpaces ) {
+            this.changeLanguage (lang);
+            const keysValuesList = this.i18nInst.getDataByLanguage("en"); // use "en" as the only guaranteed to exist
 
-                if ( keysValuesList !== undefined) {
-                    for (const [ns, value] of Object.entries(keysValuesList)) {
-                        log(`${ns}: ${this.nameSpaces}`);
-                        if (this.nameSpaces.includes(ns)) {
-                            log(`${ns}`);
-                            data = {
-                                ...data,
-                                ...this.loadGenericKey(lang, ns, value, unescape, vars)
-                            };
-                        }
+            if ( keysValuesList !== undefined) {
+                for (const [ns, value] of Object.entries(keysValuesList)) {
+                    log(`${ns}: ${this.nameSpaces}`);
+                    if (this.nameSpaces.includes(ns)) {
+                        log(`${ns}`);
+                        data = {
+                            ...data,
+                            ...this.loadGenericKey(lang, ns, value, unescape, vars)
+                        };
                     }
                 }
             }
-        } catch (err) {
-            throw err; // propagate
         }
 
         return data;
@@ -168,22 +160,17 @@ export default class i18nCh {
 
         let t = key;
         if (this.i18nInst) {
-            try {
+            this.changeLanguage(lang);
+            t = <string> this.i18nInst.t(key, {
+                lng: lang,
+                ns: this.nameSpaces,
+                ...vars,
+                interpolation: {
+                    escapeValue: !unescape // Unescape only if `unescape` is true
+                }
+            });
 
-                this.changeLanguage(lang);
-                t = <string> this.i18nInst.t(key, {
-                    lng: lang,
-                    ns: this.nameSpaces,
-                    ...vars,
-                    interpolation: {
-                        escapeValue: !unescape // Unescape only if `unescape` is true
-                    }
-                });
-
-                log(`searched for key:${key} lang:${lang} and got: ${t}`);
-            } catch (err) {
-                throw err; // propagate
-            }
+            log(`searched for key:${key} lang:${lang} and got: ${t}`);
         }
         return t;
     }
