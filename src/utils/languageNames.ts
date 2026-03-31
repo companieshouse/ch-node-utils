@@ -26,7 +26,7 @@ export default class LanguageNames {
     }
 
     // custom sort to leave "en" always at 1st position
-    private static _customSort(a: string, b: string): number {
+    private static customSort(a: string, b: string): number {
         if (a === "en") { return -1; } // "en" is considered smaller, so it will be placed at the beginning
         if (b === "en") { return 1; }
 
@@ -35,7 +35,7 @@ export default class LanguageNames {
 
     static sourceLocales( localesDir: string ): NamedIsoCode[] {
         const localesArray = SubDirs.getSubDirs (localesDir);
-        return LanguageNames.getNativeNamesObjectArray (localesArray.sort(LanguageNames._customSort));
+        return LanguageNames.getNativeNamesObjectArray (localesArray.sort(LanguageNames.customSort));
     }
 
     static isSupportedLocale( localesDir: string, locale: string ): boolean {
