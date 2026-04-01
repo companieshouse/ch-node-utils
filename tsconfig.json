@@ -1,6 +1,6 @@
 {
    "compilerOptions": {
-     "target": "es6",
+     "target": "ES2022",
      "module": "NodeNext",
      "strict": true,
      "outDir": "./lib",
@@ -17,7 +17,8 @@
             "src/index.ts",
             "src/global.d.ts",
             "node_modules/@types"
-        ]
+        ],
+     "types": ["stack-utils"]
    },
    "include": [
         "./src",
