@@ -29,11 +29,6 @@ test-unit:
 .PHONY: test
 test: test-unit
 
-.PHONY: sonar
-sonar:
-    npm run coverage:report
-	npm run sonarqube
-
 .PHONY: package
 package: build
 ifndef version
