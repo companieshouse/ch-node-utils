@@ -3,6 +3,9 @@
 set of node utils which can be used across repos/projects.
 Available as a normal npm dependency([here on npmjs](https://www.npmjs.com/package/@companieshouse/ch-node-utils))
 
+## Development
+Once you have made changes to the library, you must validate against a service in Docker before merging your PR into main. Follow the guidance on the [Validating Library Changes Confluence page](https://companieshouse.atlassian.net/wiki/spaces/DEV/pages/6404931599/Validating+Library+Upgrades+with+Docker+Before+Merging ). Reach out to the Common Components teams if you have any questions.
+
 ## Compatible Node.js Versions
 
 This package has been upgraded to be compatible with Node v24. Presently, it's backward compatible with v20 and v18 but compatibility is primarily required for v24 as all CH Node services are in the process of being upgraded to v24.
