@@ -18,7 +18,6 @@ module.exports = {
   testTimeout: 25000,
   verbose: true,
   testMatch: ["**/test/**/*.test.[jt]s"],
-  globals: {},
   transform: {
     "^.+\\.ts$": ["ts-jest", { diagnostics: false }]
   },
