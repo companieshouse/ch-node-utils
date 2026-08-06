@@ -52,9 +52,6 @@
   "peerDependencies": {
     "govuk-frontend": "^6.0.0"
   },
-  "overrides": {
-    "brace-expansion": "^5.0.8"
-  },
   "bugs": {
     "url": "https://github.com/companieshouse/ch-node-utils/issues"
   },
