@@ -152,23 +152,3 @@ It also requires the [navbar.js](https://github.com/companieshouse/cdn.ch.gov.uk
 
 
 ### Dependency Overrides
-- **brace-expansion@5.0.8**
-  - Reason:
-      - CVE-2026-13149 affects transitive dependencies brought in by `jest` and `ts-jest`
-      - `glob@10.5.0 -> minimatch@9.0.9 -> brace-expansion@2.1.2`
-      - `test-exclude@6.0.0 -> minimatch@3.1.5 -> brace-expansion@1.1.16`
-      - No fixed versions of `glob`, `test-exclude`, `jest`, or `ts-jest` were available at the time of implementation.
-   - Mitigation:
-      - An npm override is used to force `brace-expansion@5.0.8` for all dependency paths.
-      - The application test suite was executed successfully after applying the override.
-      - Jest test execution, coverage and snapshot generation were verified to behave as expected.
-   - Risk:
-      - This override spans multiple major versions (`1.x`/`2.x` -> `5.x`).
-      - Compatibility is not guaranteed by npm and should be revalidated whenever related dependencies are upgraded.
-  - Ticket/CVE:
-      - CVE-2026-13149
-      - https://companieshouse.atlassian.net/browse/ASM-2688
-  - Remove after:
-      - Remove once glob and test-exclude has been upgraded to use >= minimatch@10.2.5.
-      - Ensure proper testing is completed after removal.
-
