@@ -152,4 +152,3 @@ It also requires the [navbar.js](https://github.com/companieshouse/cdn.ch.gov.uk
 
 
 ### Dependency Overrides
-
