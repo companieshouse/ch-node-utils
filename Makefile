@@ -20,7 +20,7 @@ lint:
 
 .PHONY: dependency-check
 dependency-check:
-# 	npm audit
+	npm audit
 
 .PHONY: test-unit
 test-unit:
