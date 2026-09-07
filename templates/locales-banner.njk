@@ -23,6 +23,7 @@ It receives:
                                    hreflang="{{ l.IsoCode }}"
                                    rel="alternate"
                                    class="govuk-link govuk-!-margin-2 language-link"
+                                   {% if currentUrl and '/accounts-filing' in currentUrl %}data-id="Switch-Language-To-{{ l.Name }}"{% endif %}
                                 >
                                     <span>{{ l.Name }}</span>
                                 </a>
